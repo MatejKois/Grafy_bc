@@ -4,17 +4,17 @@ void Floyd::calculate(DistanceMatrix& matrix)
 {
     for (int k = 1; k <= matrix.size(); ++k)
     {
-        for (int y = 1; y <= matrix.size(); ++y)
+        for (int startNode = 1; startNode <= matrix.size(); ++startNode)
         {
-            for (int x = 0; x <= matrix.size(); ++x)
+            for (int endNode = 1; endNode <= matrix.size(); ++endNode)
             {
-                if (y != x
-                    && matrix.dist(y, k) != 0
-                    && matrix.dist(k, x) != 0
-                    && (matrix.dist(y, x) == 0
-                        || matrix.dist(y, x) > matrix.dist(y, k) + matrix.dist(k, x)))
+                if (startNode != endNode
+                    && matrix.dist(startNode, k) != 0
+                    && matrix.dist(k, endNode) != 0
+                    && (matrix.dist(startNode, endNode) == 0
+                        || matrix.dist(startNode, endNode) > matrix.dist(startNode, k) + matrix.dist(k, endNode)))
                 {
-                    matrix.dist(y, x) = matrix.dist(y, k) + matrix.dist(k, x);
+                    matrix.dist(startNode, endNode) = matrix.dist(startNode, k) + matrix.dist(k, endNode);
                 }
             }
         }

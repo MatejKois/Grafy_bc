@@ -17,7 +17,7 @@ public:
     void calculate(DistanceMatrix& matrix) override;
 
 private:
-    static void* calculateRow(void* args);
+    static void* calculateByRow(void* args);
 };
 
 

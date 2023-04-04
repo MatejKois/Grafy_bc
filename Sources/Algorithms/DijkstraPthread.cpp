@@ -1,6 +1,5 @@
 #include "../../Headers/Algorithms/DijkstraPthread.h"
 #include <stack>
-#include <iostream>
 
 #define DIJKSTRA_MAX_THREADS 4
 
@@ -22,7 +21,7 @@ void DijkstraPthread::calculate(DistanceMatrix& matrix)
 
     for (int i = 0; i < DIJKSTRA_MAX_THREADS; ++i)
     {
-        pthread_create(&threads[i], nullptr, &calculateRow, &args);
+        pthread_create(&threads[i], nullptr, &calculateByRow, &args);
     }
     for (int i = 0; i < DIJKSTRA_MAX_THREADS; ++i)
     {
@@ -34,7 +33,7 @@ void DijkstraPthread::calculate(DistanceMatrix& matrix)
     delete assigned;
 }
 
-void* DijkstraPthread::calculateRow(void* args)
+void* DijkstraPthread::calculateByRow(void* args)
 {
     auto* dijkstraArgs = static_cast<DIJKSTRA_ARGS*>(args);
     std::stack<int> stack;
