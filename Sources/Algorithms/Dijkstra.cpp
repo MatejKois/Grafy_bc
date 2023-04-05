@@ -5,7 +5,6 @@ void Dijkstra::calculate(DistanceMatrix& matrix)
 {
     for (int rowStartNode = 1; rowStartNode <= matrix.size(); ++rowStartNode)
     {
-
         int current = rowStartNode;
         std::stack<int> stack;
 

@@ -2,6 +2,7 @@
 #include <stack>
 
 #include "../../Headers/Algorithms/DijkstraMPI.h"
+#include "../../Headers/Generator/GraphGenerator.h"
 
 void DijkstraMPI::calculate(DistanceMatrix& matrix)
 {
@@ -11,27 +12,37 @@ void DijkstraMPI::calculate(DistanceMatrix& matrix)
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    std::cout << "Rank: " << rank << ", size: " << size << "\n";
-
     const int matrixSize = matrix.size() + 1;
     const int rowsPerProcess = matrixSize / size;
-    int* graphBcast = new int[matrixSize * matrixSize];
+    int* graphBcast = new int[matrixSize * matrixSize]();
+//    std::cout << "Rank: " << rank << "\n";
 
     if (rank == 0)
     {
+        GraphGenerator().generate(matrix, 2, 10);
         for (int y = 0; y < matrixSize; ++y)
         {
             for (int x = 0; x < matrixSize; ++x)
             {
                 graphBcast[y * matrixSize + x] = matrix.dist(y, x);
+                std::cout << graphBcast[y * matrixSize + x] << " ";
             }
+            std::cout << "\n";
+        }
+        std::cout << "---------------------------------\n";
+    }
+    MPI_Bcast(graphBcast, matrixSize * matrixSize, MPI_INT, 0, MPI_COMM_WORLD);
+
+    int* rowData = new int[matrixSize * rowsPerProcess]();
+    for (int y = 0; y < rowsPerProcess; ++y)
+    {
+        for (int x = 0; x < matrixSize; ++x)
+        {
+            rowData[y * matrixSize + x] = graphBcast[matrixSize * y
+                                                     + matrixSize * rank * rowsPerProcess
+                                                     + x];
         }
     }
-
-    int* rowData = new int[matrixSize * rowsPerProcess];
-    MPI_Bcast(graphBcast, matrixSize * matrixSize, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Scatter(graphBcast, matrixSize * matrixSize, MPI_INT, rowData, matrixSize * rowsPerProcess, MPI_INT, 0,
-                MPI_COMM_WORLD);
 
     for (int indexInScatteredRows = 1; indexInScatteredRows < rowsPerProcess; indexInScatteredRows++)
     {
@@ -68,13 +79,8 @@ void DijkstraMPI::calculate(DistanceMatrix& matrix)
         }
     }
 
-    int* finalMatrix = nullptr;
-    if (rank == 0)
-    {
-        finalMatrix = new int[matrixSize * matrixSize];
-    }
-
-    MPI_Gather(rowData, matrixSize * rowsPerProcess, MPI_INT, finalMatrix, matrixSize * matrixSize, MPI_INT, 0,
+    int* finalMatrix = new int[matrixSize * matrixSize]();
+    MPI_Gather(rowData, matrixSize * rowsPerProcess, MPI_INT, finalMatrix, matrixSize * rowsPerProcess, MPI_INT, 0,
                MPI_COMM_WORLD);
 
     if (rank == 0)
@@ -83,8 +89,9 @@ void DijkstraMPI::calculate(DistanceMatrix& matrix)
         {
             for (int j = 0; j < matrixSize; j++)
             {
-                matrix.dist(i, j) = finalMatrix[i * matrixSize + j];
+                std::cout << finalMatrix[i * matrixSize + j] << " ";
             }
+            std::cout << "\n";
         }
     }
 
