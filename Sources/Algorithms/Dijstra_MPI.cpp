@@ -3,8 +3,6 @@
 
 #include "../../Headers/Algorithms/DijkstraMPI.h"
 
-// poslat ostatnym procesom len tie data ktore potrebuju
-
 void DijkstraMPI::calculate(DistanceMatrix& matrix)
 {
     MPI_Init(nullptr, nullptr);
@@ -13,21 +11,33 @@ void DijkstraMPI::calculate(DistanceMatrix& matrix)
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    int start = rank * (matrix.size() / size) + 1;
-    int end = (rank == size - 1) ? matrix.size() : (rank + 1);
+    std::cout << "Rank: " << rank << ", size: " << size << "\n";
 
-    int range = end - start + 1;
-    DistanceMatrix partialMatrix(range, matrix.size());
-    int current;
+    const int matrixSize = matrix.size() + 1;
+    const int rowsPerProcess = matrixSize / size;
+    int* graphBcast = new int[matrixSize * matrixSize];
 
-    MPI_Barrier(MPI_COMM_WORLD);
+    if (rank == 0)
+    {
+        for (int y = 0; y < matrixSize; ++y)
+        {
+            for (int x = 0; x < matrixSize; ++x)
+            {
+                graphBcast[y * matrixSize + x] = matrix.dist(y, x);
+            }
+        }
+    }
 
-    MPI_Scatter(matrix.data(), range * matrix.size(), MPI_INT, partialMatrix.data(), range * matrix.size(), MPI_INT, 0,
+    int* rowData = new int[matrixSize * rowsPerProcess];
+    MPI_Bcast(graphBcast, matrixSize * matrixSize, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(graphBcast, matrixSize * matrixSize, MPI_INT, rowData, matrixSize * rowsPerProcess, MPI_INT, 0,
                 MPI_COMM_WORLD);
 
-    for (int startNode = start; startNode <= end; ++startNode)
+    for (int indexInScatteredRows = 1; indexInScatteredRows < rowsPerProcess; indexInScatteredRows++)
     {
-        current = startNode;
+        // row start node is located at the start of the row
+        int rowStartNode = rowData[indexInScatteredRows * matrixSize];
+        int current = rowStartNode;
         std::stack<int> stack;
 
         stack.push(current);
@@ -36,29 +46,51 @@ void DijkstraMPI::calculate(DistanceMatrix& matrix)
             current = stack.top();
             stack.pop();
 
-            for (int j = 1; j <= matrix.size(); ++j)
+            for (int endNode = 1; endNode < matrixSize; ++endNode)
             {
-                // No edge from current to j
-                if (startNode == j || matrix.dist(current, j) <= 0)
+                //               			   no edge from current to endNode
+                if (rowStartNode == endNode || graphBcast[current * matrixSize + endNode] <= 0)
                 {
                     continue;
                 }
 
-                if (partialMatrix.dist(startNode - start, j) <= 0 || partialMatrix.dist(startNode - start, j) >=
-                                                                     matrix.dist(startNode, current) +
-                                                                     matrix.dist(current, j))
+                if (rowData[indexInScatteredRows * matrixSize + endNode] <= 0
+                    ||
+                    rowData[indexInScatteredRows * matrixSize + endNode] >=
+                    rowData[indexInScatteredRows * matrixSize + current] + graphBcast[current * matrixSize + endNode])
                 {
-                    partialMatrix.dist(startNode - start, j) =
-                            matrix.dist(startNode, current) + matrix.dist(current, j);
-                    stack.push(j);
+                    rowData[indexInScatteredRows * matrixSize + endNode] =
+                            rowData[indexInScatteredRows * matrixSize + current] +
+                            graphBcast[current * matrixSize + endNode];
+                    stack.push(endNode);
                 }
             }
         }
     }
 
-    MPI_Barrier(MPI_COMM_WORLD);
+    int* finalMatrix = nullptr;
+    if (rank == 0)
+    {
+        finalMatrix = new int[matrixSize * matrixSize];
+    }
 
-    MPI_Reduce(partialMatrix.data(), matrix.data(), matrix.size() * matrix.size(), MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
+    MPI_Gather(rowData, matrixSize * rowsPerProcess, MPI_INT, finalMatrix, matrixSize * matrixSize, MPI_INT, 0,
+               MPI_COMM_WORLD);
+
+    if (rank == 0)
+    {
+        for (int i = 0; i < matrixSize; i++)
+        {
+            for (int j = 0; j < matrixSize; j++)
+            {
+                matrix.dist(i, j) = finalMatrix[i * matrixSize + j];
+            }
+        }
+    }
+
+    delete[] rowData;
+    delete[] graphBcast;
+    delete[] finalMatrix;
 
     MPI_Finalize();
 }

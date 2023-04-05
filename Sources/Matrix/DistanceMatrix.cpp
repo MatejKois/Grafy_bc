@@ -9,6 +9,7 @@ DistanceMatrix::DistanceMatrix(int size)
     for (int i = 0; i < this->sizeY_; ++i)
     {
         matrix_[i] = new int[this->sizeX_]{0};
+        matrix_[i][0] = i;
     }
 }
 
@@ -19,6 +20,7 @@ DistanceMatrix::DistanceMatrix(int sizeY, int sizeX)
     for (int i = 0; i < this->sizeY_; ++i)
     {
         matrix_[i] = new int[this->sizeX_]{0};
+        matrix_[i][0] = i;
     }
 }
 
