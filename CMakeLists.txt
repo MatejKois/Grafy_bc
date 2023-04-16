@@ -6,10 +6,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(
         SOURCES
         "${CMAKE_SOURCE_DIR}/Sources/main.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/Dijkstra.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/DijkstraBidirectional.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/DijkstraPthread.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/Dijstra_MPI.cpp"
+        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrect.cpp"
+        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrectPthread.cpp"
+        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrect_MPI.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Algorithms/Floyd.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Algorithms/FloydPthread.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Generator/GraphGenerator.cpp"

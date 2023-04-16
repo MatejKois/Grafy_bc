@@ -2,13 +2,11 @@
 #define GRAFY_DISTANCEMATRIX_H
 
 
-class DistanceMatrix {
+class DistanceMatrix
+{
 public:
     /// @brief constructor
     DistanceMatrix(int size);
-
-    /// @brief constructor for partial matrix
-    DistanceMatrix(int sizeY, int sizeX);
 
     /// @brief copy constructor
     DistanceMatrix(DistanceMatrix& other);
@@ -17,13 +15,11 @@ public:
     int& dist(int a, int b);
 
     /// @returns pointer to the matrix memory
-    int** data();
+    int* data();
 
     /// @returns number of verices in graph (matrix)
-    int size() const { return this->sizeX_ - 1; }
-
-    /// @returns number of verices in graph (matrix)
-    int sizeY() const { return this->sizeY_ - 1; }
+    int size() const
+    { return this->size_ - 1; }
 
     /// @brief prints the distance matrix to the console
     void print();
@@ -31,9 +27,8 @@ public:
     ~DistanceMatrix();
 
 private:
-    int** matrix_;
-    int sizeX_;
-    int sizeY_;
+    int* matrix_;
+    int size_;
 };
 
 

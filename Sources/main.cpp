@@ -1,10 +1,10 @@
 #include <iostream>
 #include <chrono>
 #include "../Headers/Matrix/DistanceMatrix.h"
-#include "../Headers/Algorithms/Dijkstra.h"
+#include "../Headers/Algorithms/LabelCorrect.h"
 #include "../Headers/Algorithms/DijkstraBidirectional.h"
-#include "../Headers/Algorithms/DijkstraPthread.h"
-#include "../Headers/Algorithms/DijkstraMPI.h"
+#include "../Headers/Algorithms/LabelCorrectPthread.h"
+#include "../Headers/Algorithms/LabelCorrect_MPI.h"
 #include "../Headers/Algorithms/heap.h"
 #include "../Headers/Algorithms/Floyd.h"
 #include "../Headers/Algorithms/FloydPthread.h"
@@ -14,22 +14,22 @@
 
 int main()
 {
-    DistanceMatrix test1(9);
+    DistanceMatrix test1(10);
 //    GraphGenerator().generate(test1, 2, 10);
 //    DistanceMatrix test2(test1);
 //
 //    auto begin = std::chrono::steady_clock::now();
-//    Dijkstra().calculate(test1);
+//    LabelCorrect().calculate(test1);
 //    auto end = std::chrono::steady_clock::now();
 //
-//    std::cout << "Dijkstra = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
+//    std::cout << "LabelCorrect = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
 //              << "[microsec]\n";
 //
 //    begin = std::chrono::steady_clock::now();
-    DijkstraMPI().calculate(test1);
+    LabelCorrect_MPI().calculate(test1);
 //    end = std::chrono::steady_clock::now();
 //
-//    std::cout << "Dijkstra mpi = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
+//    std::cout << "LabelCorrect mpi = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
 //              << "[microsec]\n";
 //
 //    test1.print();
