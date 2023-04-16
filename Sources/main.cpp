@@ -15,7 +15,7 @@
 int main()
 {
     DistanceMatrix test1(8);
-    LabelCorrect_MPI::calculate(test1, "/opt/src/Grafy/Examples/test.hrn");
+    LabelCorrect_MPI().calculate(test1, "/opt/src/Grafy/Examples/test.hrn");
 
 
 //    GraphGenerator().generate(test1, 2, 10);

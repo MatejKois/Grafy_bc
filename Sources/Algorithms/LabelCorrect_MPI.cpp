@@ -5,6 +5,11 @@
 #include "../../Headers/Algorithms/LabelCorrect_MPI.h"
 #include "../../Headers/Parser/Parser.h"
 
+void LabelCorrect_MPI::calculate(DistanceMatrix& matrix)
+{
+
+}
+
 void LabelCorrect_MPI::calculate(DistanceMatrix& matrix, const std::string& graphFileName)
 {
     MPI_Init(nullptr, nullptr);
