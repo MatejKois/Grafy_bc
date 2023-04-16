@@ -1,18 +1,17 @@
-#include "../../Headers/Algorithms/LabelCorrect.h"
-#include <stack>
+#include "../../Headers/Algorithms/LabelSet.h"
+#include "../../Headers/Algorithms/heap.h"
 
-void LabelCorrect::calculate(DistanceMatrix& matrix)
+void LabelSet::calculate(DistanceMatrix& matrix)
 {
     for (int rowStartNode = 1; rowStartNode <= matrix.size(); ++rowStartNode)
     {
         int current = rowStartNode;
-        std::stack<int> stack;
+        Heap heap;
 
-        stack.push(current);
-        while (!stack.empty())
+        heap.push(0, current);
+        while (!heap.empty())
         {
-            current = stack.top();
-            stack.pop();
+            current = heap.pop();
 
             for (int endNode = 1; endNode <= matrix.size(); ++endNode)
             {
@@ -29,7 +28,7 @@ void LabelCorrect::calculate(DistanceMatrix& matrix)
                 {
                     matrix.dist(rowStartNode, endNode) =
                             matrix.dist(rowStartNode, current) + matrix.dist(current, endNode);
-                    stack.push(endNode);
+                    heap.push(matrix.dist(rowStartNode, endNode), endNode);
                 }
             }
         }

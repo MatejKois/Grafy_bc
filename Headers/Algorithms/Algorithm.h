@@ -10,9 +10,11 @@ class Algorithm
 public:
     virtual ~Algorithm() = default;
 
-    virtual void calculate(DistanceMatrix& matrix) = 0;
+    virtual void calculate(DistanceMatrix& matrix)
+    {};
 
-    virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName) = 0;
+    virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName)
+    {};
 };
 
 

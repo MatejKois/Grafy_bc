@@ -11,12 +11,15 @@
 #include "../Headers/Parser/Parser.h"
 #include "../Headers/Generator/GraphGenerator.h"
 #include "../Headers/Generator/GraphMerger.h"
+#include "../Headers/Algorithms/LabelSet.h"
 
 int main()
 {
     DistanceMatrix test1(8);
-    LabelCorrect_MPI().calculate(test1, "/opt/src/Grafy/Examples/test.hrn");
-
+    Parser::parse("/opt/src/Grafy/Examples/test.hrn", test1, true);
+//    LabelCorrect_MPI().calculate(test1, "/opt/src/Grafy/Examples/test.hrn");
+    LabelCorrect().calculate(test1);
+    test1.print();
 
 //    GraphGenerator().generate(test1, 2, 10);
 //    DistanceMatrix test2(test1);

@@ -11,6 +11,7 @@ set(
         "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrect_MPI.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Algorithms/Floyd.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Algorithms/FloydPthread.cpp"
+        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelSet.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Generator/GraphGenerator.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Generator/GraphMerger.cpp"
         "${CMAKE_SOURCE_DIR}/Sources/Matrix/DistanceMatrix.cpp"
