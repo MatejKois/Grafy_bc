@@ -21,10 +21,16 @@ int Parser::getVerticesCount(const std::string& filename)
     return max;
 }
 
-void Parser::parse(const std::string& filename, DistanceMatrix& matrix, bool weighted)
+bool Parser::parse(const std::string& filename, DistanceMatrix& matrix, bool weighted)
 {
-    std::string a, b, cost;
     std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        perror("Error opening file");
+        return false;
+    }
+
+    std::string a, b, cost;
 
     while (file >> a)
     {
@@ -37,14 +43,15 @@ void Parser::parse(const std::string& filename, DistanceMatrix& matrix, bool wei
     }
 
     file.close();
+    return true;
 }
 
 bool Parser::writeToFile(const std::string& filename, DistanceMatrix& matrix)
 {
     std::ofstream out(filename);
-
     if (!out.is_open())
     {
+        perror("Error opening file");
         return false;
     }
 

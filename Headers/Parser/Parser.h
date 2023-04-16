@@ -12,7 +12,7 @@ public:
     static int getVerticesCount(const std::string& filename);
 
     /// @brief parses graph from file to distance matrix
-    static void parse(const std::string& filename, DistanceMatrix& matrix, bool weighted);
+    static bool parse(const std::string& filename, DistanceMatrix& matrix, bool weighted);
 
     /// @brief writes matrix to file as list of edges
     static bool writeToFile(const std::string& filename, DistanceMatrix& matrix);

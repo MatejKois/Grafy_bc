@@ -3,9 +3,9 @@
 #include <cstring>
 
 #include "../../Headers/Algorithms/LabelCorrect_MPI.h"
-#include "../../Headers/Generator/GraphGenerator.h"
+#include "../../Headers/Parser/Parser.h"
 
-void LabelCorrect_MPI::calculate(DistanceMatrix& matrix)
+void LabelCorrect_MPI::calculate(DistanceMatrix& matrix, const std::string& graphFileName)
 {
     MPI_Init(nullptr, nullptr);
 
@@ -15,7 +15,7 @@ void LabelCorrect_MPI::calculate(DistanceMatrix& matrix)
 
     if (mpiRank == 0)
     {
-        GraphGenerator().generate(matrix, 2, 10);
+        Parser::parse(graphFileName, matrix, true);
         matrix.print();
     }
 

@@ -14,7 +14,10 @@
 
 int main()
 {
-    DistanceMatrix test1(10);
+    DistanceMatrix test1(8);
+    LabelCorrect_MPI::calculate(test1, "/opt/src/Grafy/Examples/test.hrn");
+
+
 //    GraphGenerator().generate(test1, 2, 10);
 //    DistanceMatrix test2(test1);
 //
@@ -26,7 +29,6 @@ int main()
 //              << "[microsec]\n";
 //
 //    begin = std::chrono::steady_clock::now();
-    LabelCorrect_MPI().calculate(test1);
 //    end = std::chrono::steady_clock::now();
 //
 //    std::cout << "LabelCorrect mpi = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()

@@ -8,7 +8,7 @@
 class LabelCorrect_MPI : public Algorithm
 {
 public:
-    void calculate(DistanceMatrix& matrix) override;
+    static void calculate(DistanceMatrix& matrix, const std::string& graphFileName);
 };
 
 
