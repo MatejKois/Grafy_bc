@@ -28,36 +28,28 @@ static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 
 int main()
 {
-    Grafy::DistanceMatrix test1(200);
+    Grafy::DistanceMatrix test1(500);
     Grafy::GraphGenerator().generate(test1, 2, 10);
 //    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
     Grafy::DistanceMatrix test2(test1);
-    Grafy::LabelCorrect().calculate(test1);
-    Grafy::FloydPthread().calculate(test2);
 
-//    test1.print();
-//    test2.print();
+    auto begin = std::chrono::steady_clock::now();
+    Grafy::FloydPthread().calculate(test1);
+    auto end = std::chrono::steady_clock::now();
 
+    std::cout << "FloydPthread = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
+              << "[microsec]\n";
+
+    begin = std::chrono::steady_clock::now();
+    Grafy::LabelCorrectPthread().calculate(test2);
+    end = std::chrono::steady_clock::now();
+
+    std::cout << "LabelCorrectPthread = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
+              << "[microsec]\n";
+
+    test1.print();
+    test2.print();
     compareMatrices(test1, test2);
-
-//    GraphGenerator().generate(test1, 2, 10);
-//    DistanceMatrix test2(test1);
-//
-//    auto begin = std::chrono::steady_clock::now();
-//    LabelCorrect().calculate(test1);
-//    auto end = std::chrono::steady_clock::now();
-//
-//    std::cout << "LabelCorrect = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
-//              << "[microsec]\n";
-//
-//    begin = std::chrono::steady_clock::now();
-//    end = std::chrono::steady_clock::now();
-//
-//    std::cout << "LabelCorrect mpi = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
-//              << "[microsec]\n";
-//
-//    test1.print();
-//    test2.print();
 
     return 0;
 }
