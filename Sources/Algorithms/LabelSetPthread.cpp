@@ -1,11 +1,11 @@
-#include "../../Headers/Algorithms/LabelCorrectPthread.h"
-#include <stack>
+#include "../../Headers/Algorithms/LabelSetPthread.h"
+#include "../../Headers/Algorithms/heap.h"
 
 #define DIJKSTRA_MAX_THREADS 4
 
 namespace Grafy
 {
-    void LabelCorrectPthread::calculate(DistanceMatrix& matrix)
+    void LabelSetPthread::calculate(DistanceMatrix& matrix)
     {
         pthread_t threads[DIJKSTRA_MAX_THREADS];
         pthread_mutex_t mutex;
@@ -35,10 +35,10 @@ namespace Grafy
         delete assigned;
     }
 
-    void* LabelCorrectPthread::calculateByRow(void* args)
+    void* LabelSetPthread::calculateByRow(void* args)
     {
         auto* dijkstraArgs = static_cast<DIJKSTRA_ARGS*>(args);
-        std::stack<int> stack;
+        Heap heap;
 
         while (true)
         {
@@ -52,11 +52,10 @@ namespace Grafy
             pthread_mutex_unlock(dijkstraArgs->mutex);
 
             int processedNode = rowStartNode;
-            stack.push(processedNode);
-            while (!stack.empty())
+            heap.push(0, processedNode);
+            while (!heap.empty())
             {
-                processedNode = stack.top();
-                stack.pop();
+                processedNode = heap.pop();
 
                 for (int endNode = 1; endNode <= dijkstraArgs->matrix->size(); ++endNode)
                 {
@@ -74,7 +73,7 @@ namespace Grafy
                         dijkstraArgs->matrix->dist(rowStartNode, endNode) =
                                 dijkstraArgs->matrix->dist(rowStartNode, processedNode) +
                                 dijkstraArgs->matrix->dist(processedNode, endNode);
-                        stack.push(endNode);
+                        heap.push(dijkstraArgs->matrix->dist(rowStartNode, endNode), endNode);
                     }
                 }
             }

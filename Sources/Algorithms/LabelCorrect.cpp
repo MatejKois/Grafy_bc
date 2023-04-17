@@ -1,35 +1,38 @@
 #include "../../Headers/Algorithms/LabelCorrect.h"
 #include <stack>
 
-void LabelCorrect::calculate(DistanceMatrix& matrix)
+namespace Grafy
 {
-    for (int rowStartNode = 1; rowStartNode <= matrix.size(); ++rowStartNode)
+    void LabelCorrect::calculate(DistanceMatrix& matrix)
     {
-        int current = rowStartNode;
-        std::stack<int> stack;
-
-        stack.push(current);
-        while (!stack.empty())
+        for (int rowStartNode = 1; rowStartNode <= matrix.size(); ++rowStartNode)
         {
-            current = stack.top();
-            stack.pop();
+            int current = rowStartNode;
+            std::stack<int> stack;
 
-            for (int endNode = 1; endNode <= matrix.size(); ++endNode)
+            stack.push(current);
+            while (!stack.empty())
             {
-                //			                   no edge from current to endNode
-                if (rowStartNode == endNode || matrix.dist(current, endNode) <= 0)
-                {
-                    continue;
-                }
+                current = stack.top();
+                stack.pop();
 
-                if (matrix.dist(rowStartNode, endNode) <= 0
-                    ||
-                    matrix.dist(rowStartNode, endNode) >=
-                    matrix.dist(rowStartNode, current) + matrix.dist(current, endNode))
+                for (int endNode = 1; endNode <= matrix.size(); ++endNode)
                 {
-                    matrix.dist(rowStartNode, endNode) =
-                            matrix.dist(rowStartNode, current) + matrix.dist(current, endNode);
-                    stack.push(endNode);
+                    //			                   no edge from current to endNode
+                    if (rowStartNode == endNode || matrix.dist(current, endNode) <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (matrix.dist(rowStartNode, endNode) <= 0
+                        ||
+                        matrix.dist(rowStartNode, endNode) >=
+                        matrix.dist(rowStartNode, current) + matrix.dist(current, endNode))
+                    {
+                        matrix.dist(rowStartNode, endNode) =
+                                matrix.dist(rowStartNode, current) + matrix.dist(current, endNode);
+                        stack.push(endNode);
+                    }
                 }
             }
         }

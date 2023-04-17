@@ -2,34 +2,37 @@
 #define GRAFY_DISTANCEMATRIX_H
 
 
-class DistanceMatrix
+namespace Grafy
 {
-public:
-    /// @brief constructor
-    DistanceMatrix(int size);
+    class DistanceMatrix
+    {
+    public:
+        /// @brief constructor
+        DistanceMatrix(int size);
 
-    /// @brief copy constructor
-    DistanceMatrix(DistanceMatrix& other);
+        /// @brief copy constructor
+        DistanceMatrix(DistanceMatrix& other);
 
-    /// @returns distance between two entered vertices in graph (matrix)
-    int& dist(int a, int b);
+        /// @returns distance between two entered vertices in graph (matrix)
+        int& dist(int a, int b);
 
-    /// @returns pointer to the matrix memory
-    int* data();
+        /// @returns pointer to the matrix memory
+        int* data();
 
-    /// @returns number of verices in graph (matrix)
-    int size() const
-    { return this->size_ - 1; }
+        /// @returns number of verices in graph (matrix)
+        int size() const
+        { return this->size_ - 1; }
 
-    /// @brief prints the distance matrix to the console
-    void print();
+        /// @brief prints the distance matrix to the console
+        void print();
 
-    ~DistanceMatrix();
+        ~DistanceMatrix();
 
-private:
-    int* matrix_;
-    int size_;
-};
+    private:
+        int* matrix_;
+        int size_;
+    };
+}
 
 
 #endif //GRAFY_DISTANCEMATRIX_H

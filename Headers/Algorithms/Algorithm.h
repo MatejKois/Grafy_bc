@@ -5,17 +5,20 @@
 #include <string>
 #include "../Matrix/DistanceMatrix.h"
 
-class Algorithm
+namespace Grafy
 {
-public:
-    virtual ~Algorithm() = default;
+    class Algorithm
+    {
+    public:
+        virtual ~Algorithm() = default;
 
-    virtual void calculate(DistanceMatrix& matrix)
-    {};
+        virtual void calculate(DistanceMatrix& matrix)
+        {};
 
-    virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName)
-    {};
-};
+        virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName)
+        {};
+    };
+}
 
 
 #endif //GRAFY_ALGORITHM_H

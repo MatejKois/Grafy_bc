@@ -1,5 +1,5 @@
-#ifndef GRAFY_LABELCORRECT_MPI_H
-#define GRAFY_LABELCORRECT_MPI_H
+#ifndef GRAFY_LABELSET_MPI_H
+#define GRAFY_LABELSET_MPI_H
 
 
 #include "Algorithm.h"
@@ -7,7 +7,7 @@
 
 namespace Grafy
 {
-    class LabelCorrect_MPI : public Algorithm
+    class LabelSet_MPI : public Algorithm
     {
     public:
         void calculate(DistanceMatrix& matrix, const std::string& graphFileName) override;
@@ -15,4 +15,4 @@ namespace Grafy
 }
 
 
-#endif //GRAFY_LABELCORRECT_MPI_H
+#endif //GRAFY_LABELSET_MPI_H

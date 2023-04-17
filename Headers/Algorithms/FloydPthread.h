@@ -4,20 +4,23 @@
 #include <pthread.h>
 #include "Algorithm.h"
 
-typedef struct floydArgs
+namespace Grafy
 {
-    DistanceMatrix* matrix;
-    int* assigned;
-    pthread_mutex_t* mutex;
-} FLOYD_ARGS;
+    typedef struct floydArgs
+    {
+        DistanceMatrix* matrix;
+        int* assigned;
+        pthread_mutex_t* mutex;
+    } FLOYD_ARGS;
 
-class FloydPthread : public Algorithm
-{
-public:
-    void calculate(DistanceMatrix& matrix) override;
+    class FloydPthread : public Algorithm
+    {
+    public:
+        void calculate(DistanceMatrix& matrix) override;
 
-private:
-    static void* assignThreads(void* args);
-};
+    private:
+        static void* assignThreads(void* args);
+    };
+}
 
 #endif //GRAFY_FLOYDPTHREAD_H

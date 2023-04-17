@@ -4,11 +4,14 @@
 
 #include "Algorithm.h"
 
-class LabelSet : public Algorithm
+namespace Grafy
 {
-public:
-    void calculate(DistanceMatrix& matrix) override;
-};
+    class LabelSet : public Algorithm
+    {
+    public:
+        void calculate(DistanceMatrix& matrix) override;
+    };
+}
 
 
 #endif //GRAFY_LABELSET_H

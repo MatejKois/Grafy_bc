@@ -1,13 +1,13 @@
 #include <mpi.h>
-#include <stack>
 #include <cstring>
 
-#include "../../Headers/Algorithms/LabelCorrect_MPI.h"
+#include "../../Headers/Algorithms/LabelSet_MPI.h"
+#include "../../Headers/Algorithms/heap.h"
 #include "../../Headers/Parser/Parser.h"
 
 namespace Grafy
 {
-    void LabelCorrect_MPI::calculate(DistanceMatrix& matrix, const std::string& graphFileName)
+    void LabelSet_MPI::calculate(DistanceMatrix& matrix, const std::string& graphFileName)
     {
         MPI_Init(nullptr, nullptr);
 
@@ -39,13 +39,12 @@ namespace Grafy
             // row start node is located at the start of the row
             int rowStartNode = rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns];
             int current = rowStartNode;
-            std::stack<int> stack;
+            Heap heap;
 
-            stack.push(current);
-            while (!stack.empty())
+            heap.push(0, current);
+            while (!heap.empty())
             {
-                current = stack.top();
-                stack.pop();
+                current = heap.pop();
 
                 for (int endNode = 1; endNode < matrixSizeColumns; ++endNode)
                 {
@@ -64,7 +63,7 @@ namespace Grafy
                         rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + endNode] =
                                 rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + current] +
                                 graphBcast[current * matrixSizeColumns + endNode];
-                        stack.push(endNode);
+                        heap.push(matrix.dist(rowStartNode, endNode), endNode);
                     }
                 }
             }

@@ -4,10 +4,14 @@
 
 #include "Algorithm.h"
 
-class Floyd : public Algorithm {
-public:
-    void calculate(DistanceMatrix& matrix) override;
-};
+namespace Grafy
+{
+    class Floyd : public Algorithm
+    {
+    public:
+        void calculate(DistanceMatrix& matrix) override;
+    };
+}
 
 
 #endif //GRAFY_FLOYD_H

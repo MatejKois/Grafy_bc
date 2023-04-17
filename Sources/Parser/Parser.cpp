@@ -3,69 +3,72 @@
 #include <fstream>
 #include <iostream>
 
-int Parser::getVerticesCount(const std::string& filename)
+namespace Grafy
 {
-    int max = 0;
-    std::string word;
-    std::ifstream file(filename);
-
-    while (file >> word)
+    int Parser::getVerticesCount(const std::string& filename)
     {
-        max = std::stoi(word) > max ? std::stoi(word) : max;
-        file >> word;
-        max = std::stoi(word) > max ? std::stoi(word) : max;
-        file >> word;
-    }
+        int max = 0;
+        std::string word;
+        std::ifstream file(filename);
 
-    file.close();
-    return max;
-}
-
-bool Parser::parse(const std::string& filename, DistanceMatrix& matrix, bool weighted)
-{
-    std::ifstream file(filename);
-    if (!file.is_open())
-    {
-        perror("Error opening file");
-        return false;
-    }
-
-    std::string a, b, cost;
-
-    while (file >> a)
-    {
-        file >> b;
-        if (weighted)
+        while (file >> word)
         {
-            file >> cost;
+            max = std::stoi(word) > max ? std::stoi(word) : max;
+            file >> word;
+            max = std::stoi(word) > max ? std::stoi(word) : max;
+            file >> word;
         }
-        matrix.dist(std::stoi(a), std::stoi(b)) = weighted ? std::stoi(cost) : 1;
+
+        file.close();
+        return max;
     }
 
-    file.close();
-    return true;
-}
-
-bool Parser::writeToFile(const std::string& filename, DistanceMatrix& matrix)
-{
-    std::ofstream out(filename);
-    if (!out.is_open())
+    bool Parser::parse(const std::string& filename, DistanceMatrix& matrix, bool weighted)
     {
-        perror("Error opening file");
-        return false;
-    }
-
-    for (int y = 0; y <= matrix.size(); ++y)
-    {
-        for (int x = 0; x <= matrix.size(); ++x)
+        std::ifstream file(filename);
+        if (!file.is_open())
         {
-            if (matrix.dist(y, x) > 0)
+            perror("Error opening file");
+            return false;
+        }
+
+        std::string a, b, cost;
+
+        while (file >> a)
+        {
+            file >> b;
+            if (weighted)
             {
-                out << y << " " << x << " " << matrix.dist(y, x) << "\n";
+                file >> cost;
+            }
+            matrix.dist(std::stoi(a), std::stoi(b)) = weighted ? std::stoi(cost) : 1;
+        }
+
+        file.close();
+        return true;
+    }
+
+    bool Parser::writeToFile(const std::string& filename, DistanceMatrix& matrix)
+    {
+        std::ofstream out(filename);
+        if (!out.is_open())
+        {
+            perror("Error opening file");
+            return false;
+        }
+
+        for (int y = 0; y <= matrix.size(); ++y)
+        {
+            for (int x = 0; x <= matrix.size(); ++x)
+            {
+                if (matrix.dist(y, x) > 0)
+                {
+                    out << y << " " << x << " " << matrix.dist(y, x) << "\n";
+                }
             }
         }
-    }
 
-    out.close();
-    return true;
+        out.close();
+        return true;
+    }
 }

@@ -4,21 +4,24 @@
 #include <pthread.h>
 #include "Algorithm.h"
 
-typedef struct dijkstraArgs
+namespace Grafy
 {
-    DistanceMatrix* matrix;
-    int* assigned;
-    pthread_mutex_t* mutex;
-} DIJKSTRA_ARGS;
+    typedef struct dijkstraArgs
+    {
+        DistanceMatrix* matrix;
+        int* assigned;
+        pthread_mutex_t* mutex;
+    } DIJKSTRA_ARGS;
 
-class LabelCorrectPthread : public Algorithm
-{
-public:
-    void calculate(DistanceMatrix& matrix) override;
+    class LabelCorrectPthread : public Algorithm
+    {
+    public:
+        void calculate(DistanceMatrix& matrix) override;
 
-private:
-    static void* calculateByRow(void* args);
-};
+    private:
+        static void* calculateByRow(void* args);
+    };
+}
 
 
 #endif //GRAFY_LABELCORRECTPTHREAD_H

@@ -5,11 +5,14 @@
 #include "Algorithm.h"
 #include "../Matrix/DistanceMatrix.h"
 
-class LabelCorrect : public Algorithm
+namespace Grafy
 {
-public:
-    void calculate(DistanceMatrix& matrix) override;
-};
+    class LabelCorrect : public Algorithm
+    {
+    public:
+        void calculate(DistanceMatrix& matrix) override;
+    };
+}
 
 
 #endif //GRAFY_LABELCORRECT_H
