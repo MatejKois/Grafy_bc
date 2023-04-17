@@ -18,13 +18,13 @@ namespace Grafy
     DistanceMatrix::DistanceMatrix(DistanceMatrix& other)
             : size_(other.size_)
     {
-        matrix_ = new int[other.size_];
-        std::memcpy(matrix_, other.matrix_, other.size_ * sizeof(int));
+        matrix_ = new int[other.size_ * other.size_];
+        std::memcpy(matrix_, other.matrix_, other.size_ * other.size_ * sizeof(int));
     }
 
-    int& DistanceMatrix::dist(int a, int b)
+    int& DistanceMatrix::dist(int y, int x)
     {
-        return matrix_[a * size_ + b];
+        return matrix_[y * size_ + x];
     }
 
     int* DistanceMatrix::data()
@@ -80,5 +80,24 @@ namespace Grafy
     {
         delete[] matrix_;
         matrix_ = nullptr;
+    }
+
+    bool DistanceMatrix::operator==(DistanceMatrix& other)
+    {
+        if (size_ != other.size_)
+        {
+            return false;
+        }
+        for (int y = 0; y < size_; ++y)
+        {
+            for (int x = 0; x < size_; ++x)
+            {
+                if (dist(y, x) != other.dist(y, x))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

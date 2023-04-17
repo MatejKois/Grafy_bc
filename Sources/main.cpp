@@ -15,13 +15,29 @@
 #include "../Headers/Generator/GraphGenerator.h"
 #include "../Headers/Generator/GraphMerger.h"
 
+static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
+{
+    if (a == b)
+    {
+        std::cout << "Matrices are equal.\n";
+    } else
+    {
+        std::cout << "Matrices are NOT equal!\n";
+    }
+}
+
 int main()
 {
     Grafy::DistanceMatrix test1(8);
-//    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
-    Grafy::LabelSet_MPI().calculate(test1, "/home/dev/Projects/Grafy/Examples/test.hrn");
-//    Grafy::LabelCorrectPthread().calculate(test1);
-//    test1.print();
+    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
+    Grafy::DistanceMatrix test2(test1);
+    Grafy::LabelCorrectPthread().calculate(test1);
+    Grafy::LabelSet().calculate(test2);
+
+    test1.print();
+    test2.print();
+
+    compareMatrices(test1, test2);
 
 //    GraphGenerator().generate(test1, 2, 10);
 //    DistanceMatrix test2(test1);

@@ -14,19 +14,23 @@ namespace Grafy
         DistanceMatrix(DistanceMatrix& other);
 
         /// @returns distance between two entered vertices in graph (matrix)
-        int& dist(int a, int b);
+        int& dist(int y, int x);
 
         /// @returns pointer to the matrix memory
         int* data();
 
-        /// @returns number of verices in graph (matrix)
+        /// @returns number of verices in graph (matrix), NOT the array size !
         int size() const
         { return this->size_ - 1; }
 
         /// @brief prints the distance matrix to the console
         void print();
 
+        /// @brief destructor
         ~DistanceMatrix();
+
+        /// @brief comparison operator for comparing two matrices
+        bool operator==(DistanceMatrix& other);
 
     private:
         int* matrix_;
