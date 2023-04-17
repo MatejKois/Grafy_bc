@@ -12,21 +12,28 @@ namespace Grafy
         pthread_mutex_init(&mutex, nullptr);
 
         int* assigned = new int;
-        *assigned = 1;
+        int* k = new int;
+        *k = 1;
 
         FLOYD_ARGS args = {
                 &matrix,
                 assigned,
+                k,
                 &mutex
         };
 
-        for (int i = 0; i < FLOYD_MAX_THREADS; ++i)
+        while (*k <= matrix.size())
         {
-            pthread_create(&threads[i], nullptr, &assignThreads, &args);
-        }
-        for (int i = 0; i < FLOYD_MAX_THREADS; ++i)
-        {
-            pthread_join(threads[i], nullptr);
+            *args.assigned = 1;
+            for (int i = 0; i < FLOYD_MAX_THREADS; ++i)
+            {
+                pthread_create(&threads[i], nullptr, &assignThreads, &args);
+            }
+            for (int i = 0; i < FLOYD_MAX_THREADS; ++i)
+            {
+                pthread_join(threads[i], nullptr);
+            }
+            ++*k;
         }
 
         pthread_mutex_destroy(&mutex);
@@ -46,25 +53,20 @@ namespace Grafy
                 pthread_mutex_unlock(floydArgs->mutex);
                 break;
             }
-            int k = (*floydArgs->assigned)++;
+            int startNode = (*floydArgs->assigned)++;
             pthread_mutex_unlock(floydArgs->mutex);
 
-            for (int startNode = 1; startNode <= floydArgs->matrix->size(); ++startNode)
+            for (int endNode = 1; endNode <= floydArgs->matrix->size(); ++endNode)
             {
-                for (int endNode = 1; endNode <= floydArgs->matrix->size(); ++endNode)
+                if (startNode != endNode
+                    && floydArgs->matrix->dist(startNode, *floydArgs->k) != 0
+                    && floydArgs->matrix->dist(*floydArgs->k, endNode) != 0
+                    && (floydArgs->matrix->dist(startNode, endNode) == 0
+                        || floydArgs->matrix->dist(startNode, endNode) >
+                           floydArgs->matrix->dist(startNode, *floydArgs->k) + floydArgs->matrix->dist(*floydArgs->k, endNode)))
                 {
-                    if (startNode != endNode
-                        && floydArgs->matrix->dist(startNode, k) != 0
-                        && floydArgs->matrix->dist(k, endNode) != 0
-                        && (floydArgs->matrix->dist(startNode, endNode) == 0
-                            || floydArgs->matrix->dist(startNode, endNode) >
-                               floydArgs->matrix->dist(startNode, k) + floydArgs->matrix->dist(k, endNode)))
-                    {
-                        pthread_mutex_lock(floydArgs->mutex);
-                        floydArgs->matrix->dist(startNode, endNode) =
-                                floydArgs->matrix->dist(startNode, k) + floydArgs->matrix->dist(k, endNode);
-                        pthread_mutex_unlock(floydArgs->mutex);
-                    }
+                    floydArgs->matrix->dist(startNode, endNode) =
+                            floydArgs->matrix->dist(startNode, *floydArgs->k) + floydArgs->matrix->dist(*floydArgs->k, endNode);
                 }
             }
         }

@@ -11,7 +11,7 @@ namespace Grafy
         matrix_ = new int[size_ * size_];
         for (int i = 0; i < size_; ++i)
         {
-            matrix_[i * size_] = i;
+            matrix_[i * size_] = i; // adds the row-vertex number at the row start for indexing purposes
         }
     }
 

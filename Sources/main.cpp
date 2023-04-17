@@ -28,14 +28,15 @@ static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 
 int main()
 {
-    Grafy::DistanceMatrix test1(8);
-    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
+    Grafy::DistanceMatrix test1(200);
+    Grafy::GraphGenerator().generate(test1, 2, 10);
+//    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
     Grafy::DistanceMatrix test2(test1);
-    Grafy::LabelCorrectPthread().calculate(test1);
-    Grafy::LabelSet().calculate(test2);
+    Grafy::LabelCorrect().calculate(test1);
+    Grafy::FloydPthread().calculate(test2);
 
-    test1.print();
-    test2.print();
+//    test1.print();
+//    test2.print();
 
     compareMatrices(test1, test2);
 

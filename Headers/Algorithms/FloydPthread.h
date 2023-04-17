@@ -10,6 +10,7 @@ namespace Grafy
     {
         DistanceMatrix* matrix;
         int* assigned;
+        int* k;
         pthread_mutex_t* mutex;
     } FLOYD_ARGS;
 
