@@ -3,7 +3,7 @@
 
 
 #include "Algorithm.h"
-#include "heap.h"
+#include "../GraphStructures/heap.h"
 #include <pthread.h>
 
 namespace Grafy

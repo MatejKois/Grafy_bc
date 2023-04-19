@@ -1,5 +1,5 @@
 #include "../../Headers/Algorithms/LabelSet.h"
-#include "../../Headers/Algorithms/heap.h"
+#include "../../Headers/GraphStructures/heap.h"
 
 namespace Grafy
 {

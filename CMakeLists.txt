@@ -5,19 +5,21 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(
         SOURCES
-        "${CMAKE_SOURCE_DIR}/Sources/main.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrect.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrectPthread.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelCorrect_MPI.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/Floyd.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/FloydPthread.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelSet.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelSetPthread.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Algorithms/LabelSet_MPI.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Generator/GraphGenerator.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Generator/GraphMerger.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Matrix/DistanceMatrix.cpp"
-        "${CMAKE_SOURCE_DIR}/Sources/Parser/Parser.cpp"
+
+        "Sources/main.cpp"
+        "Sources/Algorithms/LabelCorrect.cpp"
+        "Sources/Algorithms/LabelCorrectPthread.cpp"
+        "Sources/Algorithms/LabelCorrect_MPI.cpp"
+        "Sources/Algorithms/Floyd.cpp"
+        "Sources/Algorithms/FloydPthread.cpp"
+        "Sources/Algorithms/LabelSet.cpp"
+        "Sources/Algorithms/LabelSetPthread.cpp"
+        "Sources/Algorithms/LabelSet_MPI.cpp"
+        "Sources/Generator/GraphGenerator.cpp"
+        "Sources/Generator/GraphMerger.cpp"
+        "Sources/GraphStructures/DistanceMatrix.cpp"
+        "Sources/GraphStructures/EdgesList.cpp"
+        "Sources/Parser/Parser.cpp"
 )
 
 add_executable(Grafy ${SOURCES})

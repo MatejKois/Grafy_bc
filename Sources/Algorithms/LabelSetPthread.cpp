@@ -1,5 +1,5 @@
 #include "../../Headers/Algorithms/LabelSetPthread.h"
-#include "../../Headers/Algorithms/heap.h"
+#include "../../Headers/GraphStructures/heap.h"
 
 #define DIJKSTRA_MAX_THREADS 4
 

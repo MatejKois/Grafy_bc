@@ -2,7 +2,7 @@
 #define GRAFY_GRAPHGENERATOR_H
 
 
-#include "../Matrix/DistanceMatrix.h"
+#include "../GraphStructures/DistanceMatrix.h"
 
 namespace Grafy
 {

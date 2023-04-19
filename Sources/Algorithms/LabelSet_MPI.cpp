@@ -2,7 +2,7 @@
 #include <cstring>
 
 #include "../../Headers/Algorithms/LabelSet_MPI.h"
-#include "../../Headers/Algorithms/heap.h"
+#include "../../Headers/GraphStructures/heap.h"
 #include "../../Headers/Parser/Parser.h"
 
 namespace Grafy
@@ -17,7 +17,7 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
-            Parser::parse(graphFileName, matrix, true);
+            Parser::parse(graphFileName, matrix);
             matrix.print();
         }
 

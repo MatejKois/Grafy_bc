@@ -2,7 +2,7 @@
 #define GRAFY_GRAPHMERGER_H
 
 
-#include "../Matrix/DistanceMatrix.h"
+#include "../GraphStructures/DistanceMatrix.h"
 
 namespace Grafy
 {

@@ -17,7 +17,7 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
-            Parser::parse(graphFileName, matrix, true);
+            Parser::parse(graphFileName, matrix);
             matrix.print();
         }
 

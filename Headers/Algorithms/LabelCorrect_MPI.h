@@ -3,7 +3,7 @@
 
 
 #include "Algorithm.h"
-#include "../Matrix/DistanceMatrix.h"
+#include "../GraphStructures/DistanceMatrix.h"
 
 namespace Grafy
 {

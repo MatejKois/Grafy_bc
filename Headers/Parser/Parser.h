@@ -3,18 +3,22 @@
 
 
 #include <string>
-#include "../Matrix/DistanceMatrix.h"
+#include "../GraphStructures/DistanceMatrix.h"
+#include "../GraphStructures/EdgesList.h"
 
 namespace Grafy
 {
     class Parser
     {
     public:
-        /// @returns number of vertices in graph stored in file
-        static int getVerticesCount(const std::string& filename);
+        /// @returns counts number of vertices and edges in graph stored in file
+        static void countEdgesAndVertices(const std::string& filename, int& edgesCount, int& verticesCount);
 
         /// @brief parses graph from file to distance matrix
-        static bool parse(const std::string& filename, DistanceMatrix& matrix, bool weighted);
+        static bool parse(const std::string& filename, DistanceMatrix& matrix);
+
+        /// @brief parses graph from file to distance matrix
+        static bool parse(const std::string& filename, EdgesList& list);
 
         /// @brief writes matrix to file as list of edges
         static bool writeToFile(const std::string& filename, DistanceMatrix& matrix);

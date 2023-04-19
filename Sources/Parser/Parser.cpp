@@ -5,25 +5,27 @@
 
 namespace Grafy
 {
-    int Parser::getVerticesCount(const std::string& filename)
+    void Parser::countEdgesAndVertices(const std::string& filename, int& edgesCount, int& verticesCount)
     {
-        int max = 0;
+        edgesCount = 0;
+        verticesCount = 0;
+
         std::string word;
         std::ifstream file(filename);
 
         while (file >> word)
         {
-            max = std::stoi(word) > max ? std::stoi(word) : max;
+            verticesCount = std::stoi(word) > verticesCount ? std::stoi(word) : verticesCount;
             file >> word;
-            max = std::stoi(word) > max ? std::stoi(word) : max;
+            verticesCount = std::stoi(word) > verticesCount ? std::stoi(word) : verticesCount;
             file >> word;
+            ++edgesCount;
         }
 
         file.close();
-        return max;
     }
 
-    bool Parser::parse(const std::string& filename, DistanceMatrix& matrix, bool weighted)
+    bool Parser::parse(const std::string& filename, DistanceMatrix& matrix)
     {
         std::ifstream file(filename);
         if (!file.is_open())
@@ -37,14 +39,38 @@ namespace Grafy
         while (file >> a)
         {
             file >> b;
-            if (weighted)
-            {
-                file >> cost;
-            }
-            matrix.dist(std::stoi(a), std::stoi(b)) = weighted ? std::stoi(cost) : 1;
+            file >> cost;
+            matrix.dist(std::stoi(a), std::stoi(b)) = std::stoi(cost);
         }
 
         file.close();
+        return true;
+    }
+
+    bool Parser::parse(const std::string& filename, EdgesList& list)
+    {
+        std::ifstream file(filename);
+        if (!file.is_open())
+        {
+            perror("Error opening file");
+            return false;
+        }
+
+        std::string a, b, weight;
+        int i = 0;
+
+        while (file >> a)
+        {
+            file >> b;
+            file >> weight;
+            list.list()[3 * i] = std::stoi(a);
+            list.list()[3 * i + 1] = std::stoi(b);
+            list.list()[3 * i + 2] = std::stoi(weight);
+            ++i;
+        }
+
+        file.close();
+        list.updateStartPositions();
         return true;
     }
 
