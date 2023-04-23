@@ -9,7 +9,7 @@ namespace Grafy
     class GraphGenerator
     {
     public:
-        void generate(DistanceMatrix& matrix, int distanceMin, int distanceMax);
+        void generate(DistanceMatrix& matrix, int distanceMin, int distanceMax, int edgesToAddCount);
 
     private:
         /// @brief creates complete graph - a list of edges
@@ -25,7 +25,7 @@ namespace Grafy
         static void makeTree(DistanceMatrix& matrix, int** sortedEdges, int verticesCount);
 
         /// @brief adds random edges to the tree
-        static void addMoreEdges(DistanceMatrix& matrix, int** allEdges, int verticesCount);
+        static void addMoreEdges(DistanceMatrix& matrix, int** allEdges, int verticesCount, int edgesToAddCount);
     };
 }
 

@@ -8,14 +8,14 @@ namespace Grafy
             : numEdges_(numEdges), numVertices_(numVertices)
     {
         list_ = new int[3 * numEdges];
-        startPositions_ = new int[numVertices + 1];
+        startPositions_ = new int[numVertices + 2];
     }
 
     EdgesList::EdgesList(EdgesList& other)
             : numEdges_(other.numEdges_), numVertices_(other.numVertices_)
     {
         list_ = new int[3 * other.numEdges_];
-        startPositions_ = new int[other.numVertices_ + 1];
+        startPositions_ = new int[other.numVertices_ + 2];
         std::memcpy(list_, other.list_, 3 * other.numEdges_ * sizeof(int));
         std::memcpy(startPositions_, other.startPositions_, (other.numVertices_ + 1) * sizeof(int));
     }
@@ -37,23 +37,22 @@ namespace Grafy
                 startPositions_[current] = i;
             }
         }
+        startPositions_[numVertices_ + 1] = numEdges_;
     }
 
     void EdgesList::print()
     {
+        std::cout << "-------------------------\n";
         for (int i = 1; i <= numVertices_; ++i)
         {
-            int pos = startPositions_[i];
-            int vertex = list_[3 * pos];
-            std::cout << ">" << vertex << ":\n";
-            while (list_[3 * pos] == vertex && pos < numEdges_)
+            for (int pos = startPositions_[i]; pos < startPositions_[i + 1]; ++pos)
             {
                 std::cout << " " <<
                           list_[3 * pos] << "-" <<
                           list_[3 * pos + 1] << " " <<
                           list_[3 * pos + 2] << "\n";
-                ++pos;
             }
         }
+        std::cout << "-------------------------\n";
     }
 }

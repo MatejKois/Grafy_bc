@@ -12,7 +12,7 @@ namespace Grafy
     {
     public:
         /// @returns counts number of vertices and edges in graph stored in file
-        static void countEdgesAndVertices(const std::string& filename, int& edgesCount, int& verticesCount);
+        static bool countEdgesAndVertices(const std::string& filename, int& edgesCount, int& verticesCount);
 
         /// @brief parses graph from file to distance matrix
         static bool parse(const std::string& filename, DistanceMatrix& matrix);

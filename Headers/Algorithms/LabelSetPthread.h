@@ -10,7 +10,7 @@ namespace Grafy
     class LabelSetPthread : public Algorithm
     {
     public:
-        void calculate(DistanceMatrix& matrix) override;
+        void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) override;
 
     private:
         static void* calculateByRow(void* args);

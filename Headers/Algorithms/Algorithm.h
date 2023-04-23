@@ -4,6 +4,7 @@
 
 #include <string>
 #include "../GraphStructures/DistanceMatrix.h"
+#include "../GraphStructures/EdgesList.h"
 
 namespace Grafy
 {
@@ -15,7 +16,13 @@ namespace Grafy
         virtual void calculate(DistanceMatrix& matrix)
         {};
 
+        virtual void calculate(EdgesList& graph, DistanceMatrix& resultMatrix)
+        {};
+
         virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName)
+        {};
+
+        virtual void calculate(EdgesList& graph, const std::string& graphFileName)
         {};
     };
 }

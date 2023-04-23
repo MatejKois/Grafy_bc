@@ -3,9 +3,9 @@
 
 namespace Grafy
 {
-    void LabelCorrect::calculate(DistanceMatrix& matrix)
+    void LabelCorrect::calculate(EdgesList& graph, DistanceMatrix& resultMatrix)
     {
-        for (int rowStartNode = 1; rowStartNode <= matrix.size(); ++rowStartNode)
+        for (int rowStartNode = 1; rowStartNode <= graph.numVertices(); ++rowStartNode)
         {
             int current = rowStartNode;
             std::stack<int> stack;
@@ -16,21 +16,18 @@ namespace Grafy
                 current = stack.top();
                 stack.pop();
 
-                for (int endNode = 1; endNode <= matrix.size(); ++endNode)
+                for (int positionInEdgesList = graph.startPositions()[current];
+                     positionInEdgesList < graph.startPositions()[current + 1];
+                     ++positionInEdgesList)
                 {
-                    //			                   no edge from current to endNode
-                    if (rowStartNode == endNode || matrix.dist(current, endNode) <= 0)
-                    {
-                        continue;
-                    }
+                    int endNode = graph[3 * positionInEdgesList + 1];
+                    int processedEdgeWeight = graph[3 * positionInEdgesList + 2];
 
-                    if (matrix.dist(rowStartNode, endNode) <= 0
-                        ||
-                        matrix.dist(rowStartNode, endNode) >=
-                        matrix.dist(rowStartNode, current) + matrix.dist(current, endNode))
+                    if (resultMatrix.dist(rowStartNode, endNode) >
+                        resultMatrix.dist(rowStartNode, current) + processedEdgeWeight)
                     {
-                        matrix.dist(rowStartNode, endNode) =
-                                matrix.dist(rowStartNode, current) + matrix.dist(current, endNode);
+                        resultMatrix.dist(rowStartNode, endNode) =
+                                resultMatrix.dist(rowStartNode, current) + processedEdgeWeight;
                         stack.push(endNode);
                     }
                 }

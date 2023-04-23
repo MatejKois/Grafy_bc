@@ -3,6 +3,8 @@
 #include <string>
 #include <cstring>
 
+#define MATRIX_DIST_INF 999999
+
 namespace Grafy
 {
     DistanceMatrix::DistanceMatrix(int size)
@@ -11,6 +13,11 @@ namespace Grafy
         matrix_ = new int[size_ * size_];
         for (int i = 0; i < size_; ++i)
         {
+            for (int j = 1; j < size_; ++j)
+            {
+                matrix_[i * size_ + j] = MATRIX_DIST_INF;
+            }
+            matrix_[i * size_ + i] = 0; // adds 0 for distance between the same node
             matrix_[i * size_] = i; // adds the row-vertex number at the row start for indexing purposes
         }
     }
@@ -59,9 +66,9 @@ namespace Grafy
             printf("%5d|", y);
             for (int x = 1; x < size_; ++x)
             {
-                if (y == x)
+                if (matrix_[y * size_ + x] <= 0 || matrix_[y * size_ + x] >= MATRIX_DIST_INF)
                 {
-                    printf("  x  |");
+                    printf("  -  |");
                 } else
                 {
                     printf("%5d|", matrix_[y * size_ + x]);
@@ -101,3 +108,5 @@ namespace Grafy
         return true;
     }
 }
+
+#undef MATRIX_DIST_INF

@@ -2,7 +2,6 @@
 #include <chrono>
 #include "../Headers/GraphStructures//DistanceMatrix.h"
 #include "../Headers/Algorithms/LabelCorrect.h"
-#include "../Headers/Algorithms/DijkstraBidirectional.h"
 #include "../Headers/Algorithms/LabelCorrectPthread.h"
 #include "../Headers/Algorithms/LabelCorrect_MPI.h"
 #include "../Headers/Algorithms/LabelSet_MPI.h"
@@ -30,20 +29,25 @@ int main()
 {
     int verticesCount, edgesCount;
     Grafy::Parser::countEdgesAndVertices("../Examples/test.hrn", edgesCount, verticesCount);
+
     Grafy::EdgesList list(edgesCount, verticesCount);
-
     Grafy::Parser::parse("../Examples/test.hrn", list);
-    list.print();
+
+    Grafy::DistanceMatrix test1(verticesCount);
+    Grafy::DistanceMatrix test2(verticesCount);
+
+    Grafy::LabelCorrect().calculate(list, test1);
+    test1.print();
+
+    Grafy::LabelSetPthread().calculate(list, test2);
+    test2.print();
 
 
 
 
-//    Grafy::DistanceMatrix test1(8);
-//    Grafy::LabelCorrect_MPI().calculate(test1, "../Examples/test.hrn");
-
-//    Grafy::DistanceMatrix test1(100);
-//    Grafy::GraphGenerator().generate(test1, 2, 10);
-////    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
+//    Grafy::DistanceMatrix test1(15);
+//    Grafy::GraphGenerator().generate(test1, 2, 10, 5);
+//    Grafy::Parser::parse("/home/dev/Projects/Grafy/Examples/test.hrn", test1, true);
 //    Grafy::DistanceMatrix test2(test1);
 //
 //    auto begin = std::chrono::steady_clock::now();

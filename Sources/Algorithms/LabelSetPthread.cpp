@@ -5,7 +5,7 @@
 
 namespace Grafy
 {
-    void LabelSetPthread::calculate(DistanceMatrix& matrix)
+    void LabelSetPthread::calculate(EdgesList& graph, DistanceMatrix& resultMatrix)
     {
         pthread_t threads[DIJKSTRA_MAX_THREADS];
         pthread_mutex_t mutex;
@@ -16,7 +16,8 @@ namespace Grafy
         *assigned = 1;
 
         DIJKSTRA_ARGS args = {
-                &matrix,
+                &graph,
+                &resultMatrix,
                 assigned,
                 &mutex
         };
@@ -43,7 +44,7 @@ namespace Grafy
         while (true)
         {
             pthread_mutex_lock(dijkstraArgs->mutex);
-            if (*dijkstraArgs->assigned > dijkstraArgs->matrix->size())
+            if (*dijkstraArgs->assigned > dijkstraArgs->resultMatrix->size())
             {
                 pthread_mutex_unlock(dijkstraArgs->mutex);
                 break;
@@ -57,28 +58,26 @@ namespace Grafy
             {
                 processedNode = heap.pop();
 
-                for (int endNode = 1; endNode <= dijkstraArgs->matrix->size(); ++endNode)
+                for (int positionInEdgesList = dijkstraArgs->graph->startPositions()[processedNode];
+                     positionInEdgesList < dijkstraArgs->graph->startPositions()[processedNode + 1];
+                     ++positionInEdgesList)
                 {
-                    if (rowStartNode == endNode || dijkstraArgs->matrix->dist(processedNode, endNode) <= 0)
-                    {
-                        continue;
-                    }
+                    int endNode = (*dijkstraArgs->graph)[3 * positionInEdgesList + 1];
+                    int processedEdgeWeight = (*dijkstraArgs->graph)[3 * positionInEdgesList + 2];
 
-                    if (dijkstraArgs->matrix->dist(rowStartNode, endNode) <= 0
-                        ||
-                        dijkstraArgs->matrix->dist(rowStartNode, endNode) >=
-                        dijkstraArgs->matrix->dist(rowStartNode, processedNode) +
-                        dijkstraArgs->matrix->dist(processedNode, endNode))
+                    if (dijkstraArgs->resultMatrix->dist(rowStartNode, endNode) >
+                        dijkstraArgs->resultMatrix->dist(rowStartNode, processedNode) + processedEdgeWeight)
                     {
-                        dijkstraArgs->matrix->dist(rowStartNode, endNode) =
-                                dijkstraArgs->matrix->dist(rowStartNode, processedNode) +
-                                dijkstraArgs->matrix->dist(processedNode, endNode);
-                        heap.push(dijkstraArgs->matrix->dist(rowStartNode, endNode), endNode);
+                        dijkstraArgs->resultMatrix->dist(rowStartNode, endNode) =
+                                dijkstraArgs->resultMatrix->dist(rowStartNode, processedNode) + processedEdgeWeight;
+                        heap.push(dijkstraArgs->resultMatrix->dist(rowStartNode, endNode), endNode);
                     }
                 }
             }
         }
-
+        
         return nullptr;
     }
 }
+
+#undef DIJKSTRA_MAX_THREADS

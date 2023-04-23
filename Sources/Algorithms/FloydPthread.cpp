@@ -59,14 +59,14 @@ namespace Grafy
             for (int endNode = 1; endNode <= floydArgs->matrix->size(); ++endNode)
             {
                 if (startNode != endNode
-                    && floydArgs->matrix->dist(startNode, *floydArgs->k) != 0
-                    && floydArgs->matrix->dist(*floydArgs->k, endNode) != 0
                     && (floydArgs->matrix->dist(startNode, endNode) == 0
                         || floydArgs->matrix->dist(startNode, endNode) >
-                           floydArgs->matrix->dist(startNode, *floydArgs->k) + floydArgs->matrix->dist(*floydArgs->k, endNode)))
+                           floydArgs->matrix->dist(startNode, *floydArgs->k) +
+                           floydArgs->matrix->dist(*floydArgs->k, endNode)))
                 {
                     floydArgs->matrix->dist(startNode, endNode) =
-                            floydArgs->matrix->dist(startNode, *floydArgs->k) + floydArgs->matrix->dist(*floydArgs->k, endNode);
+                            floydArgs->matrix->dist(startNode, *floydArgs->k) +
+                            floydArgs->matrix->dist(*floydArgs->k, endNode);
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace Grafy
     class LabelCorrect : public Algorithm
     {
     public:
-        void calculate(DistanceMatrix& matrix) override;
+        void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) override;
     };
 }
 

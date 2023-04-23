@@ -3,7 +3,7 @@
 
 namespace Grafy
 {
-    void GraphGenerator::generate(DistanceMatrix& matrix, int distanceMin, int distanceMax)
+    void GraphGenerator::generate(DistanceMatrix& matrix, int distanceMin, int distanceMax, int edgesToAddCount)
     {
         int verticesCount = matrix.size();
         int** allEdges = new int* [verticesCount * verticesCount]; //complete graph will be stored here
@@ -15,7 +15,7 @@ namespace Grafy
         makeCompleteGraph(verticesCount, distanceMin, distanceMax, allEdges);
         quickSortArray(allEdges, 0, verticesCount * verticesCount);
         makeTree(matrix, allEdges, verticesCount);
-        addMoreEdges(matrix, allEdges, verticesCount);
+        addMoreEdges(matrix, allEdges, verticesCount, edgesToAddCount);
 
         for (int i = 0; i < verticesCount * verticesCount; ++i)
         {
@@ -126,22 +126,22 @@ namespace Grafy
         delete[] componentId;
     }
 
-    void GraphGenerator::addMoreEdges(DistanceMatrix& matrix, int** allEdges, int verticesCount)
+    void GraphGenerator::addMoreEdges(DistanceMatrix& matrix, int** allEdges, int verticesCount, int edgesToAddCount)
     {
-        const int chanceOfAddingAnEdge = 20;
         std::random_device rd;
         std::mt19937 mt(rd());
-        std::uniform_real_distribution<double> randDist(0, 100);
-        for (int i = 0; i < verticesCount * verticesCount; ++i)
+        std::uniform_int_distribution<int> randDist(0, verticesCount * verticesCount - 1);
+        while (edgesToAddCount > 0)
         {
-            int v1 = allEdges[i][0];
-            int v2 = allEdges[i][1];
-            int weight = allEdges[i][2];
-            //the edge is added to the matrix from the complete graph list
-            if (v1 != v2 && randDist(mt) < chanceOfAddingAnEdge)
+            int indexInAllEdges = randDist(mt);
+            int v1 = allEdges[indexInAllEdges][0];
+            int v2 = allEdges[indexInAllEdges][1];
+            int weight = allEdges[indexInAllEdges][2];
+            if (v1 != v2 && matrix.dist(v1, v2) != weight)
             {
                 matrix.dist(v1, v2) = weight;
                 matrix.dist(v2, v1) = weight;
+                --edgesToAddCount;
             }
         }
     }

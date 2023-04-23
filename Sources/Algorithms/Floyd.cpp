@@ -11,8 +11,6 @@ namespace Grafy
                 for (int endNode = 1; endNode <= matrix.size(); ++endNode)
                 {
                     if (startNode != endNode
-                        && matrix.dist(startNode, k) != 0
-                        && matrix.dist(k, endNode) != 0
                         && (matrix.dist(startNode, endNode) == 0
                             || matrix.dist(startNode, endNode) > matrix.dist(startNode, k) + matrix.dist(k, endNode)))
                     {

@@ -15,17 +15,19 @@ namespace Grafy
         /// @brief copy constructor
         EdgesList(EdgesList& other);
 
-        /// @brief creates EdgesList from distance matrix
-        EdgesList(DistanceMatrix& matrix);
-
         /// @brief destructor
         ~EdgesList();
 
-        /// @brief adds edge to the list
-        void addEdge(int vertex1, int vertex2, int weight);
-
         /// @brief updates start positions for all vertices
         void updateStartPositions();
+
+        /// @brief returns number of edges in the graph
+        int numEdges() const
+        { return numEdges_; }
+
+        /// @brief returns number of vertices in the graph
+        int numVertices() const
+        { return numVertices_; }
 
         /// @brief returns pointer to the edges list
         int* list()
@@ -37,6 +39,10 @@ namespace Grafy
 
         /// @brief prints the edges list
         void print();
+
+        /// @brief prints the edges list
+        int& operator[](int i)
+        { return list_[i]; }
 
     private:
         /// @brief list containing all edges in graph

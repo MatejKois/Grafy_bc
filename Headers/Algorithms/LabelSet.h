@@ -9,7 +9,7 @@ namespace Grafy
     class LabelSet : public Algorithm
     {
     public:
-        void calculate(DistanceMatrix& matrix) override;
+        void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) override;
     };
 }
 

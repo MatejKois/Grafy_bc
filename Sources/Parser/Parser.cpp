@@ -5,13 +5,18 @@
 
 namespace Grafy
 {
-    void Parser::countEdgesAndVertices(const std::string& filename, int& edgesCount, int& verticesCount)
+    bool Parser::countEdgesAndVertices(const std::string& filename, int& edgesCount, int& verticesCount)
     {
         edgesCount = 0;
         verticesCount = 0;
 
         std::string word;
         std::ifstream file(filename);
+        if (!file.is_open())
+        {
+            perror("Error opening file");
+            return false;
+        }
 
         while (file >> word)
         {
@@ -23,6 +28,7 @@ namespace Grafy
         }
 
         file.close();
+        return true;
     }
 
     bool Parser::parse(const std::string& filename, DistanceMatrix& matrix)

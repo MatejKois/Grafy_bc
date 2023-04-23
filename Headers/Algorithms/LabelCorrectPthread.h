@@ -8,7 +8,8 @@ namespace Grafy
 {
     typedef struct dijkstraArgs
     {
-        DistanceMatrix* matrix;
+        EdgesList* graph;
+        DistanceMatrix* resultMatrix;
         int* assigned;
         pthread_mutex_t* mutex;
     } DIJKSTRA_ARGS;
@@ -16,7 +17,7 @@ namespace Grafy
     class LabelCorrectPthread : public Algorithm
     {
     public:
-        void calculate(DistanceMatrix& matrix) override;
+        void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) override;
 
     private:
         static void* calculateByRow(void* args);
