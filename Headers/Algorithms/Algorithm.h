@@ -22,7 +22,7 @@ namespace Grafy
         virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName)
         {};
 
-        virtual void calculate(EdgesList& graph, const std::string& graphFileName)
+        virtual void calculate(const std::string& graphFileName)
         {};
     };
 }

@@ -5,9 +5,11 @@
 #include "../../Headers/Algorithms/LabelCorrect_MPI.h"
 #include "../../Headers/Parser/Parser.h"
 
+#define MATRIX_DIST_INF 9999
+
 namespace Grafy
 {
-    void LabelCorrect_MPI::calculate(DistanceMatrix& matrix, const std::string& graphFileName)
+    void LabelCorrect_MPI::calculate(const std::string& graphFileName)
     {
         MPI_Init(nullptr, nullptr);
 
@@ -15,24 +17,50 @@ namespace Grafy
         MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
         MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
+        int* edgesCount = new int{0};
+        int* verticesCount = new int{0};
+
         if (mpiRank == 0)
         {
-            Parser::parse(graphFileName, matrix);
-            matrix.print();
+            Parser::countEdgesAndVertices(graphFileName, *edgesCount, *verticesCount);
         }
 
-        const int matrixSizeColumns = matrix.size() + 1;
-        const int rowsPerProcess =
-                matrixSizeColumns % mpiSize == 0 ? matrixSizeColumns / mpiSize : matrixSizeColumns / mpiSize +
-                                                                                 matrixSizeColumns % mpiSize;
-        int* graphBcast = matrix.data();
+        MPI_Bcast(edgesCount, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(verticesCount, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
+        EdgesList edgesList(*edgesCount, *verticesCount);
 
-        MPI_Bcast(graphBcast, matrixSizeColumns * matrixSizeColumns, MPI_INT, 0, MPI_COMM_WORLD);
+        if (mpiRank == 0)
+        {
+            Parser::parse(graphFileName, edgesList);
+        }
 
-        int* rowsAssignedToProcess = new int[rowsPerProcess * matrixSizeColumns]();
-        std::memcpy(rowsAssignedToProcess, graphBcast + mpiRank * rowsPerProcess * matrixSizeColumns,
-                    rowsPerProcess * matrixSizeColumns * sizeof(int));
+        int* listOfEdges = edgesList.list();
+        int* startPositionsOfEdges = edgesList.startPositions();
+
+        MPI_Bcast(listOfEdges, *edgesCount * 3, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(startPositionsOfEdges, *verticesCount + 2, MPI_INT, 0, MPI_COMM_WORLD);
+
+        const int matrixSizeColumns = *verticesCount + 1;
+        const int rowsPerProcess = matrixSizeColumns % mpiSize == 0 ?
+                                   matrixSizeColumns / mpiSize :
+                                   matrixSizeColumns / mpiSize + matrixSizeColumns % mpiSize;
+
+        int* rowsAssignedToProcess = new int[rowsPerProcess * matrixSizeColumns];
+        for (int y = 0; y < rowsPerProcess; ++y)
+        {
+            for (int x = 0; x < matrixSizeColumns; ++x)
+            {
+                if (x == y + mpiRank * rowsPerProcess)
+                {
+                    rowsAssignedToProcess[y * matrixSizeColumns + x] = 0;
+                } else
+                {
+                    rowsAssignedToProcess[y * matrixSizeColumns + x] = MATRIX_DIST_INF;
+                }
+            }
+            rowsAssignedToProcess[y * matrixSizeColumns] = mpiRank * rowsPerProcess + y;
+        }
 
         for (int indexInScatteredRows = 0; indexInScatteredRows < rowsPerProcess; indexInScatteredRows++)
         {
@@ -47,23 +75,20 @@ namespace Grafy
                 current = stack.top();
                 stack.pop();
 
-                for (int endNode = 1; endNode < matrixSizeColumns; ++endNode)
+                for (int positionInEdgesList = startPositionsOfEdges[current];
+                     positionInEdgesList < startPositionsOfEdges[current + 1];
+                     ++positionInEdgesList)
                 {
-                    //               			   no edge from current to endNode
-                    if (rowStartNode == endNode || graphBcast[current * matrixSizeColumns + endNode] <= 0)
-                    {
-                        continue;
-                    }
+                    int endNode = listOfEdges[3 * positionInEdgesList + 1];
+                    int processedEdgeWeight = listOfEdges[3 * positionInEdgesList + 2];
 
-                    if (rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + endNode] <= 0
-                        ||
-                        rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + endNode] >=
+                    if (rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + endNode] >
                         rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + current] +
-                        graphBcast[current * matrixSizeColumns + endNode])
+                        processedEdgeWeight)
                     {
                         rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + endNode] =
                                 rowsAssignedToProcess[indexInScatteredRows * matrixSizeColumns + current] +
-                                graphBcast[current * matrixSizeColumns + endNode];
+                                processedEdgeWeight;
                         stack.push(endNode);
                     }
                 }
@@ -82,13 +107,43 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
-            std::memcpy(matrix.data(), finalMatrix, matrixSizeColumns * matrixSizeColumns * sizeof(int));
-            matrix.print();
+            for (int i = 0; i < matrixSizeColumns; ++i)
+            {
+                printf("-----+");
+            }
+            printf("\n  X  |");
+            for (int i = 1; i < matrixSizeColumns; ++i)
+            {
+                printf("%5d|", i);
+            }
+            printf("\n");
+            for (int i = 0; i < matrixSizeColumns; ++i)
+            {
+                printf("-----+");
+            }
+            printf("\n");
+            for (int y = 0; y < matrixSizeColumns; ++y)
+            {
+                for (int x = 0; x < matrixSizeColumns; ++x)
+                {
+                    printf("%5d|", finalMatrix[y * matrixSizeColumns + x]);
+                }
+                printf("\n");
+            }
+            for (int i = 0; i < matrixSizeColumns; ++i)
+            {
+                printf("-----+");
+            }
+            printf("\n");
         }
 
+        delete edgesCount;
+        delete verticesCount;
         delete[] rowsAssignedToProcess;
         delete[] finalMatrix;
 
         MPI_Finalize();
     }
 }
+
+#undef MATRIX_DIST_INF

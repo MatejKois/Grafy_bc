@@ -28,6 +28,7 @@ namespace Grafy
 
     void EdgesList::updateStartPositions()
     {
+        startPositions_[0] = 0;
         int current = 0;
         for (int i = 0; i < numEdges_; ++i)
         {
