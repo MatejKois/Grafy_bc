@@ -49,7 +49,7 @@ namespace Grafy
     {
         if (size_ > 16)
         {
-            printf("GraphStructures too large to print!\n");
+            printf("Matrix too large to print!\n");
             return;
         }
         for (int i = 0; i < size_; ++i)

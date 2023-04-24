@@ -28,7 +28,7 @@ static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 
 int main()
 {
-    Grafy::Floyd_MPI().calculate("../Examples/test.hrn");
+    Grafy::LabelSet_MPI().calculate("../Examples/priklad.hrn");
 
     return 0;
 }
