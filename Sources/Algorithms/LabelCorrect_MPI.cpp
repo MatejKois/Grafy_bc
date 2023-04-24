@@ -1,6 +1,5 @@
 #include <mpi.h>
 #include <stack>
-#include <cstring>
 
 #include "../../Headers/Algorithms/LabelCorrect.h"
 #include "../../Headers/Algorithms/LabelCorrect_MPI.h"

@@ -8,6 +8,7 @@ set(
 
         "Sources/main.cpp"
         "Sources/Algorithms/Floyd.cpp"
+        "Sources/Algorithms/Floyd_MPI.cpp"
         "Sources/Algorithms/FloydPthread.cpp"
         "Sources/Algorithms/LabelCorrect.cpp"
         "Sources/Algorithms/LabelCorrect_MPI.cpp"

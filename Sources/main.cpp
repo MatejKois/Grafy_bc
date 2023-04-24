@@ -13,6 +13,7 @@
 #include "../Headers/Parser/Parser.h"
 #include "../Headers/Generator/GraphGenerator.h"
 #include "../Headers/Generator/GraphMerger.h"
+#include "../Headers/Algorithms/Floyd_MPI.h"
 
 static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 {
@@ -27,14 +28,7 @@ static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 
 int main()
 {
-//    Grafy::DistanceMatrix test(8);
-
-//    Grafy::EdgesList list(30, 8);
-//    Grafy::Parser::parse("../Examples/test.hrn", list);
-//    Grafy::LabelSet().calculate(list, test);
-//    test.print();
-
-    Grafy::LabelSet_MPI().calculate("../Examples/test.hrn");
+    Grafy::Floyd_MPI().calculate("../Examples/test.hrn");
 
     return 0;
 }

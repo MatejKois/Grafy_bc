@@ -21,9 +21,6 @@ namespace Grafy
         virtual void calculate(EdgesList& graph, DistanceMatrix& resultMatrix)
         {};
 
-        virtual void calculate(DistanceMatrix& matrix, const std::string& graphFileName)
-        {};
-
         virtual void calculate(const std::string& graphFileName)
         {};
     };
