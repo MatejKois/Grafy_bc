@@ -2,10 +2,9 @@
 #include <stack>
 #include <cstring>
 
+#include "../../Headers/Algorithms/LabelCorrect.h"
 #include "../../Headers/Algorithms/LabelCorrect_MPI.h"
 #include "../../Headers/Parser/Parser.h"
-
-#define MATRIX_DIST_INF 9999
 
 namespace Grafy
 {
@@ -107,34 +106,18 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
-            for (int i = 0; i < matrixSizeColumns; ++i)
+            DistanceMatrix result(*verticesCount, finalMatrix);
+            result.print();
+            DistanceMatrix check(*verticesCount);
+            LabelCorrect().calculate(edgesList, check);
+
+            if (result == check)
             {
-                printf("-----+");
-            }
-            printf("\n  X  |");
-            for (int i = 1; i < matrixSizeColumns; ++i)
+                std::cout << "Matrices are equal.\n";
+            } else
             {
-                printf("%5d|", i);
+                std::cout << "Matrices are NOT equal!\n";
             }
-            printf("\n");
-            for (int i = 0; i < matrixSizeColumns; ++i)
-            {
-                printf("-----+");
-            }
-            printf("\n");
-            for (int y = 0; y < matrixSizeColumns; ++y)
-            {
-                for (int x = 0; x < matrixSizeColumns; ++x)
-                {
-                    printf("%5d|", finalMatrix[y * matrixSizeColumns + x]);
-                }
-                printf("\n");
-            }
-            for (int i = 0; i < matrixSizeColumns; ++i)
-            {
-                printf("-----+");
-            }
-            printf("\n");
         }
 
         delete edgesCount;
@@ -145,5 +128,3 @@ namespace Grafy
         MPI_Finalize();
     }
 }
-
-#undef MATRIX_DIST_INF

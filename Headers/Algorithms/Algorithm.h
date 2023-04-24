@@ -6,6 +6,8 @@
 #include "../GraphStructures/DistanceMatrix.h"
 #include "../GraphStructures/EdgesList.h"
 
+#define MATRIX_DIST_INF 999999
+
 namespace Grafy
 {
     class Algorithm

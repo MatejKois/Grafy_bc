@@ -34,7 +34,7 @@ int main()
 //    Grafy::LabelSet().calculate(list, test);
 //    test.print();
 
-    Grafy::LabelCorrect_MPI().calculate("../Examples/test.hrn");
+    Grafy::LabelSet_MPI().calculate("../Examples/test.hrn");
 
     return 0;
 }

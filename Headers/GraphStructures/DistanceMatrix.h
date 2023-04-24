@@ -10,6 +10,9 @@ namespace Grafy
         /// @brief constructor
         DistanceMatrix(int size);
 
+        /// @brief constructor that initializes matrix with an already filled array
+        DistanceMatrix(int size, int* array);
+
         /// @brief copy constructor
         DistanceMatrix(DistanceMatrix& other);
 

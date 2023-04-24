@@ -7,14 +7,14 @@ set(
         SOURCES
 
         "Sources/main.cpp"
-        "Sources/Algorithms/LabelCorrect.cpp"
-        "Sources/Algorithms/LabelCorrectPthread.cpp"
-        "Sources/Algorithms/LabelCorrect_MPI.cpp"
         "Sources/Algorithms/Floyd.cpp"
         "Sources/Algorithms/FloydPthread.cpp"
+        "Sources/Algorithms/LabelCorrect.cpp"
+        "Sources/Algorithms/LabelCorrect_MPI.cpp"
+        "Sources/Algorithms/LabelCorrectPthread.cpp"
         "Sources/Algorithms/LabelSet.cpp"
-        "Sources/Algorithms/LabelSetPthread.cpp"
         "Sources/Algorithms/LabelSet_MPI.cpp"
+        "Sources/Algorithms/LabelSetPthread.cpp"
         "Sources/Generator/GraphGenerator.cpp"
         "Sources/Generator/GraphMerger.cpp"
         "Sources/GraphStructures/DistanceMatrix.cpp"
