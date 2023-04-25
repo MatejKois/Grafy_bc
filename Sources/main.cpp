@@ -28,7 +28,17 @@ static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 
 int main()
 {
-    Grafy::LabelSet_MPI().calculate("../Examples/priklad.hrn");
+//    auto start = std::chrono::high_resolution_clock::now();
+
+
+    Grafy::LabelSet_MPI().calculate("../Examples/priklad.hrn", false);
+
+
+//    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+//            std::chrono::high_resolution_clock::now() - start
+//    );
+//    std::cout << "Finished, " << duration.count() << " us elapsed\n";
+
 
     return 0;
 }

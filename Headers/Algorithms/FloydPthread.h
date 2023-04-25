@@ -19,6 +19,12 @@ namespace Grafy
     public:
         void calculate(DistanceMatrix& matrix) override;
 
+        void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) override
+        {};
+
+        void calculate(const std::string& graphFileName, bool doCheck) override
+        {};
+
     private:
         static void* assignThreads(void* args);
     };

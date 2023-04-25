@@ -10,7 +10,13 @@ namespace Grafy
     class LabelSet_MPI : public Algorithm
     {
     public:
-        void calculate(const std::string& graphFileName) override;
+        void calculate(const std::string& graphFileName, bool doCheck) override;
+
+        void calculate(DistanceMatrix& matrix) override
+        {};
+
+        void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) override
+        {};
     };
 }
 

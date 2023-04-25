@@ -15,14 +15,11 @@ namespace Grafy
     public:
         virtual ~Algorithm() = default;
 
-        virtual void calculate(DistanceMatrix& matrix)
-        {};
+        virtual void calculate(DistanceMatrix& matrix) = 0;
 
-        virtual void calculate(EdgesList& graph, DistanceMatrix& resultMatrix)
-        {};
+        virtual void calculate(EdgesList& graph, DistanceMatrix& resultMatrix) = 0;
 
-        virtual void calculate(const std::string& graphFileName)
-        {};
+        virtual void calculate(const std::string& graphFileName, bool doCheck) = 0; // for open mpi
     };
 }
 

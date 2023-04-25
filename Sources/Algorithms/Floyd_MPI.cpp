@@ -1,5 +1,6 @@
-#include <mpi.h>
+#include <chrono>
 #include <cstring>
+#include <mpi.h>
 
 #include "../../Headers/Algorithms/Floyd_MPI.h"
 #include "../../Headers/Parser/Parser.h"
@@ -7,7 +8,7 @@
 
 namespace Grafy
 {
-    void Floyd_MPI::calculate(const std::string& graphFileName)
+    void Floyd_MPI::calculate(const std::string& graphFileName, bool doCheck)
     {
         MPI_Init(nullptr, nullptr);
 
@@ -15,10 +16,13 @@ namespace Grafy
         MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
         MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
+        auto start = std::chrono::high_resolution_clock::now();
+
         int* verticesCount = new int{0};
 
         if (mpiRank == 0)
         {
+            start = std::chrono::high_resolution_clock::now();
             int edgesCountDummy; // not needed for this algorithm
             Parser::countEdgesAndVertices(graphFileName, edgesCountDummy, *verticesCount);
         }
@@ -78,17 +82,25 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+                    std::chrono::high_resolution_clock::now() - start
+            );
+            std::cout << "Floyd_MPI finished, " << duration.count() << " us elapsed\n";
+
             DistanceMatrix result(*verticesCount, broadcastMatrix);
             result.print();
-            DistanceMatrix check(matrix);
-            Floyd().calculate(check);
 
-            if (result == check)
+            if (doCheck)
             {
-                std::cout << "Matrices are equal.\n";
-            } else
-            {
-                std::cout << "Matrices are NOT equal!\n";
+                DistanceMatrix check(matrix);
+                Floyd().calculate(check);
+                if (result == check)
+                {
+                    std::cout << "Matrices are equal.\n";
+                } else
+                {
+                    std::cout << "Matrices are NOT equal!\n";
+                }
             }
         }
 

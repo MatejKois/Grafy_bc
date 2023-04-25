@@ -1,3 +1,4 @@
+#include <chrono>
 #include <mpi.h>
 
 #include "../../Headers/Algorithms/LabelCorrect.h"
@@ -7,7 +8,7 @@
 
 namespace Grafy
 {
-    void LabelSet_MPI::calculate(const std::string& graphFileName)
+    void LabelSet_MPI::calculate(const std::string& graphFileName, bool doCheck)
     {
         MPI_Init(nullptr, nullptr);
 
@@ -15,11 +16,14 @@ namespace Grafy
         MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
         MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
 
+        auto start = std::chrono::high_resolution_clock::now();
+
         int* edgesCount = new int{0};
         int* verticesCount = new int{0};
 
         if (mpiRank == 0)
         {
+            start = std::chrono::high_resolution_clock::now();
             Parser::countEdgesAndVertices(graphFileName, *edgesCount, *verticesCount);
         }
 
@@ -104,17 +108,25 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+                    std::chrono::high_resolution_clock::now() - start
+            );
+            std::cout << "LabelSet_MPI finished, " << duration.count() << " us elapsed\n";
+
             DistanceMatrix result(*verticesCount, finalMatrix);
             result.print();
-            DistanceMatrix check(*verticesCount);
-            LabelCorrect().calculate(edgesList, check);
 
-            if (result == check)
+            if (doCheck)
             {
-                std::cout << "Matrices are equal.\n";
-            } else
-            {
-                std::cout << "Matrices are NOT equal!\n";
+                DistanceMatrix check(*verticesCount);
+                LabelCorrect().calculate(edgesList, check);
+                if (result == check)
+                {
+                    std::cout << "Matrices are equal.\n";
+                } else
+                {
+                    std::cout << "Matrices are NOT equal!\n";
+                }
             }
         }
 
