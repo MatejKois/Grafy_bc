@@ -1,7 +1,9 @@
-#include "../../Headers/Parser/Parser.h"
-
 #include <fstream>
 #include <iostream>
+
+#include "../../Headers/Algorithms/Algorithm.h"
+#include "../../Headers/Parser/Parser.h"
+
 
 namespace Grafy
 {
@@ -93,7 +95,7 @@ namespace Grafy
         {
             for (int x = 0; x <= matrix.size(); ++x)
             {
-                if (matrix.dist(y, x) > 0)
+                if (matrix.dist(y, x) > 0 && matrix.dist(y, x) < MATRIX_DIST_INF)
                 {
                     out << y << " " << x << " " << matrix.dist(y, x) << "\n";
                 }

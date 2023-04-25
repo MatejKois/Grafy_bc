@@ -33,7 +33,7 @@ int main()
 //    // ----------------------------------------------------------------------
 
 
-    Grafy::LabelSet_MPI().calculate("../Examples/priklad.hrn", false);
+    Grafy::LabelCorrect_MPI().calculate("../Examples/priklad.hrn", false);
 
 
 //    // ----------------------------------------------------------------------
