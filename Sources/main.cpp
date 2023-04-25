@@ -1,19 +1,20 @@
 #include <iostream>
 #include <chrono>
-#include "../Headers/GraphStructures//DistanceMatrix.h"
-#include "../Headers/Algorithms/LabelCorrect.h"
-#include "../Headers/Algorithms/LabelCorrectPthread.h"
-#include "../Headers/Algorithms/LabelCorrect_MPI.h"
-#include "../Headers/Algorithms/LabelSet_MPI.h"
-#include "../Headers/GraphStructures/heap.h"
+
 #include "../Headers/Algorithms/Floyd.h"
+#include "../Headers/Algorithms/Floyd_MPI.h"
 #include "../Headers/Algorithms/FloydPthread.h"
+#include "../Headers/Algorithms/LabelCorrect.h"
+#include "../Headers/Algorithms/LabelCorrect_MPI.h"
+#include "../Headers/Algorithms/LabelCorrectPthread.h"
 #include "../Headers/Algorithms/LabelSet.h"
+#include "../Headers/Algorithms/LabelSet_MPI.h"
 #include "../Headers/Algorithms/LabelSetPthread.h"
-#include "../Headers/Parser/Parser.h"
 #include "../Headers/Generator/GraphGenerator.h"
 #include "../Headers/Generator/GraphMerger.h"
-#include "../Headers/Algorithms/Floyd_MPI.h"
+#include "../Headers/GraphStructures/DistanceMatrix.h"
+#include "../Headers/GraphStructures/EdgesList.h"
+#include "../Headers/Parser/Parser.h"
 
 static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
 {
