@@ -23,7 +23,6 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
-            start = std::chrono::high_resolution_clock::now();
             Parser::countEdgesAndVertices(graphFileName, *edgesCount, *verticesCount);
         }
 
@@ -35,6 +34,7 @@ namespace Grafy
         if (mpiRank == 0)
         {
             Parser::parse(graphFileName, edgesList);
+            start = std::chrono::high_resolution_clock::now();
         }
 
         int* listOfEdges = edgesList.list();
@@ -112,10 +112,11 @@ namespace Grafy
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                     std::chrono::high_resolution_clock::now() - start
             );
-            std::cout << "LabelCorrect_MPI finished, " << duration.count() << " us elapsed\n";
+//            std::cout << "LabelCorrect_MPI finished, " << duration.count() << " us elapsed\n";
+            printf("LabelCorrect_MPI;%s;%ld\n", graphFileName.c_str(), duration.count());
 
             DistanceMatrix result(*verticesCount, finalMatrix);
-            result.print();
+//            result.print();
 
             if (doCheck)
             {

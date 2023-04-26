@@ -85,10 +85,11 @@ namespace Grafy
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
                     std::chrono::high_resolution_clock::now() - start
             );
-            std::cout << "Floyd_MPI finished, " << duration.count() << " us elapsed\n";
+//            std::cout << "Floyd_MPI finished, " << duration.count() << " us elapsed\n";
+            printf("Floyd_MPI;%s;%ld\n", graphFileName.c_str(), duration.count());
 
             DistanceMatrix result(*verticesCount, broadcastMatrix);
-            result.print();
+//            result.print();
 
             if (doCheck)
             {
