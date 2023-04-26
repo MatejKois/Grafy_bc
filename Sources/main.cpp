@@ -94,7 +94,7 @@ static void measure(bool pthread)
             char msg[200];
             sprintf(msg, "%dV_%dH;%ld\n", verticesCount, edgesToAddCount, duration.count());
             floyd << msg;
-            printf(">Finished floyd for %dV_%dH\n", verticesCount, edgesToAddCount);
+            printf(">Finished floyd for %dV_%dH (%ld us)\n", verticesCount, edgesToAddCount, duration.count());
             // ----------------------------------------------------------------------------
 
             // LabelCorrect ---------------------------------------------------------------
@@ -111,7 +111,7 @@ static void measure(bool pthread)
             );
             sprintf(msg, "%dV_%dH;%ld\n", verticesCount, edgesToAddCount, duration.count());
             labelcorrect << msg;
-            printf(">Finished label-correct for %dV_%dH\n", verticesCount, edgesToAddCount);
+            printf(">Finished label-correct for %dV_%dH (%ld us)\n", verticesCount, edgesToAddCount, duration.count());
             // ----------------------------------------------------------------------------
 
             // LabelSet -------------------------------------------------------------------
@@ -128,7 +128,7 @@ static void measure(bool pthread)
             );
             sprintf(msg, "%dV_%dH;%ld\n", verticesCount, edgesToAddCount, duration.count());
             labelset << msg;
-            printf(">Finished label-set for %dV_%dH\n", verticesCount, edgesToAddCount);
+            printf(">Finished label-set for %dV_%dH (%ld us)\n", verticesCount, edgesToAddCount, duration.count());
             // ----------------------------------------------------------------------------
         }
     }
