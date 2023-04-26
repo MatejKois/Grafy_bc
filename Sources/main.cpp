@@ -70,14 +70,14 @@ static void measure(bool pthread)
             sprintf(filename, "../Examples/%dV_%dH.hrn", verticesCount, edgesToAddCount);
 
             Grafy::DistanceMatrix testFloyd(verticesCount);
+            Grafy::DistanceMatrix testLabelCorrect(verticesCount);
+            Grafy::DistanceMatrix testLabelSet(verticesCount);
             Grafy::Parser::parse(filename, testFloyd);
 
             int numEdges, numVertices;
             Grafy::Parser::countEdgesAndVertices(filename, numEdges, numVertices);
             Grafy::EdgesList list(numEdges, numVertices);
             Grafy::Parser::parse(filename, list);
-            Grafy::DistanceMatrix testLabelCorrect(verticesCount);
-            Grafy::DistanceMatrix testLabelSet(verticesCount);
 
             // Floyd ----------------------------------------------------------------------
             auto start = std::chrono::high_resolution_clock::now();
@@ -118,10 +118,10 @@ static void measure(bool pthread)
             start = std::chrono::high_resolution_clock::now();
             if (pthread)
             {
-                Grafy::LabelSetPthread().calculate(list, testLabelCorrect);
+                Grafy::LabelSetPthread().calculate(list, testLabelSet);
             } else
             {
-                Grafy::LabelSet().calculate(list, testLabelCorrect);
+                Grafy::LabelSet().calculate(list, testLabelSet);
             }
             duration = std::chrono::duration_cast<std::chrono::microseconds>(
                     std::chrono::high_resolution_clock::now() - start
