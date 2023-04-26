@@ -91,9 +91,9 @@ namespace Grafy
             return false;
         }
 
-        for (int y = 0; y <= matrix.size(); ++y)
+        for (int y = 1; y <= matrix.size(); ++y)
         {
-            for (int x = 0; x <= matrix.size(); ++x)
+            for (int x = 1; x <= matrix.size(); ++x)
             {
                 if (matrix.dist(y, x) > 0 && matrix.dist(y, x) < MATRIX_DIST_INF)
                 {

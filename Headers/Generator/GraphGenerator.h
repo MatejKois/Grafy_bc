@@ -22,7 +22,8 @@ namespace Grafy
         void swap(int** array, int left, int right);
 
         /// @brief creates a tree from the complete graph using kruskal's algorithm
-        static void makeTree(DistanceMatrix& matrix, int** sortedEdges, int verticesCount);
+        static void makeTree(DistanceMatrix& matrix, int** sortedEdges, int verticesCount, int distanceMin,
+                             int distanceMax);
 
         /// @brief adds random edges to the tree
         static void addMoreEdges(DistanceMatrix& matrix, int** allEdges, int verticesCount, int edgesToAddCount);

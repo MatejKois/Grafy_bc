@@ -22,7 +22,6 @@ namespace Grafy
 
         if (mpiRank == 0)
         {
-            start = std::chrono::high_resolution_clock::now();
             int edgesCountDummy; // not needed for this algorithm
             Parser::countEdgesAndVertices(graphFileName, edgesCountDummy, *verticesCount);
         }
@@ -34,6 +33,7 @@ namespace Grafy
         if (mpiRank == 0)
         {
             Parser::parse(graphFileName, matrix);
+            start = std::chrono::high_resolution_clock::now();
         }
 
         const int matrixSizeColumns = *verticesCount + 1;

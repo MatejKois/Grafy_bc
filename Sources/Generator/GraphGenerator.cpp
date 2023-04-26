@@ -14,7 +14,7 @@ namespace Grafy
 
         makeCompleteGraph(verticesCount, distanceMin, distanceMax, allEdges);
         quickSortArray(allEdges, 0, verticesCount * verticesCount);
-        makeTree(matrix, allEdges, verticesCount);
+        makeTree(matrix, allEdges, verticesCount, distanceMin, distanceMax);
         addMoreEdges(matrix, allEdges, verticesCount, edgesToAddCount);
 
         for (int i = 0; i < verticesCount * verticesCount; ++i)
@@ -87,8 +87,13 @@ namespace Grafy
         array[left][2] = tmp[2];
     }
 
-    void GraphGenerator::makeTree(DistanceMatrix& matrix, int** sortedEdges, int verticesCount)
+    void GraphGenerator::makeTree(DistanceMatrix& matrix, int** sortedEdges, int verticesCount, int distanceMin,
+                                  int distanceMax)
     {
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_int_distribution<int> randDist(distanceMin, distanceMax);
+
         int* componentId = new int[verticesCount + 1];
         int selectedCount = 0;
 
@@ -111,8 +116,11 @@ namespace Grafy
             if (componentId[v1] != componentId[v2])
             {
                 ++selectedCount;
-                matrix.dist(v1, v2) = weight;
-                matrix.dist(v2, v1) = weight;
+
+                // edge weight must be generated again, as the weights int sortedEdges are sorted and would all be minimal in large graphs
+                int randWeight = randDist(mt);
+                matrix.dist(v1, v2) = randWeight;
+                matrix.dist(v2, v1) = randWeight;
 
                 int oldId = componentId[v1] > componentId[v2] ? componentId[v1] : componentId[v2];
                 int newId = componentId[v1] < componentId[v2] ? componentId[v1] : componentId[v2];
@@ -140,7 +148,6 @@ namespace Grafy
             if (v1 != v2 && matrix.dist(v1, v2) != weight)
             {
                 matrix.dist(v1, v2) = weight;
-                matrix.dist(v2, v1) = weight;
                 --edgesToAddCount;
             }
         }
