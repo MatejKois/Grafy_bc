@@ -151,7 +151,7 @@ static void measure_MPI()
             char filename[200];
             sprintf(filename, "../Examples/%dV_%dH.hrn", verticesCount, edgesToAddCount);
 
-            Grafy::Floyd_MPI().calculate(filename, false);
+            Grafy::LabelSet_MPI().calculate(filename, false);
         }
     }
 
