@@ -1,6 +1,7 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
+#include <mpi.h>
 
 #include "../Headers/Algorithms/Floyd.h"
 #include "../Headers/Algorithms/Floyd_MPI.h"
@@ -59,7 +60,7 @@ static void measure(bool pthread)
     {
         floyd.open("../Examples/results_Floyd.csv");
         labelcorrect.open("../Examples/results_LabelCorrect.csv");
-        labelcorrect.open("../Examples/results_LabelSet.csv");
+        labelset.open("../Examples/results_LabelSet.csv");
     }
     for (int verticesCount = 100; verticesCount <= 1000; verticesCount += 100)
     {
@@ -138,6 +139,25 @@ static void measure(bool pthread)
     labelset.close();
 }
 
+static void measure_MPI()
+{
+    MPI_Init(nullptr, nullptr);
+
+    for (int verticesCount = 100; verticesCount <= 1000; verticesCount += 100)
+    {
+        for (int divider = 10; divider > 1; --divider)
+        {
+            int edgesToAddCount = verticesCount / divider * verticesCount;
+            char filename[200];
+            sprintf(filename, "../Examples/%dV_%dH.hrn", verticesCount, edgesToAddCount);
+
+            Grafy::Floyd_MPI().calculate(filename, false);
+        }
+    }
+
+    MPI_Finalize();
+}
+
 int main()
 {
 //    std::cout << "Finished reading from file\n";
@@ -145,7 +165,8 @@ int main()
 //    auto start = std::chrono::high_resolution_clock::now();
 //    // ----------------------------------------------------------------------
 
-    measure(true);
+//    measure(false);
+    measure_MPI();
 
 //    // ----------------------------------------------------------------------
 //    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(

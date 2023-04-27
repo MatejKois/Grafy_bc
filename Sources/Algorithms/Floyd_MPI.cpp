@@ -10,7 +10,7 @@ namespace Grafy
 {
     void Floyd_MPI::calculate(const std::string& graphFileName, bool doCheck)
     {
-        MPI_Init(nullptr, nullptr);
+//        MPI_Init(nullptr, nullptr);
 
         int mpiRank, mpiSize;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
@@ -88,11 +88,11 @@ namespace Grafy
 //            std::cout << "Floyd_MPI finished, " << duration.count() << " us elapsed\n";
             printf("Floyd_MPI;%s;%ld\n", graphFileName.c_str(), duration.count());
 
-            DistanceMatrix result(*verticesCount, broadcastMatrix);
-//            result.print();
 
             if (doCheck)
             {
+                DistanceMatrix result(*verticesCount, broadcastMatrix);
+                result.print();
                 DistanceMatrix check(matrix);
                 Floyd().calculate(check);
                 if (result == check)
@@ -109,6 +109,6 @@ namespace Grafy
         delete[] rowsAssignedToProcess;
         delete[] broadcastMatrix;
 
-        MPI_Finalize();
+//        MPI_Finalize();
     }
 }

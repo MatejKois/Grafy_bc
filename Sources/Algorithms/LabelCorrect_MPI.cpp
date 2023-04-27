@@ -115,11 +115,11 @@ namespace Grafy
 //            std::cout << "LabelCorrect_MPI finished, " << duration.count() << " us elapsed\n";
             printf("LabelCorrect_MPI;%s;%ld\n", graphFileName.c_str(), duration.count());
 
-            DistanceMatrix result(*verticesCount, finalMatrix);
-//            result.print();
 
             if (doCheck)
             {
+                DistanceMatrix result(*verticesCount, finalMatrix);
+                result.print();
                 DistanceMatrix check(*verticesCount);
                 LabelCorrect().calculate(edgesList, check);
                 if (result == check)
