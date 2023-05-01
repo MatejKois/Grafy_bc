@@ -10,7 +10,7 @@ namespace Grafy
 {
     void Floyd_MPI::calculate(const std::string& graphFileName, bool doCheck)
     {
-//        MPI_Init(nullptr, nullptr);
+        MPI_Init(nullptr, nullptr);
 
         int mpiRank, mpiSize;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
@@ -109,6 +109,6 @@ namespace Grafy
         delete[] rowsAssignedToProcess;
         delete[] broadcastMatrix;
 
-//        MPI_Finalize();
+        MPI_Finalize();
     }
 }

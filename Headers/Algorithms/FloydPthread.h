@@ -6,11 +6,16 @@
 
 namespace Grafy
 {
+    /// @brief arguments shared by all threads
     typedef struct floydArgs
     {
         DistanceMatrix* matrix;
+
+        /// @brief this counts how many vertices have been assigned to all threads
         int* assigned;
+
         int* k;
+        
         pthread_mutex_t* mutex;
     } FLOYD_ARGS;
 

@@ -6,11 +6,16 @@
 
 namespace Grafy
 {
+    /// @brief arguments shared by all threads
     typedef struct dijkstraArgs
     {
         EdgesList* graph;
+
         DistanceMatrix* resultMatrix;
+
+        /// @brief this counts how many vertices have been assigned to all threads
         int* assigned;
+
         pthread_mutex_t* mutex;
     } DIJKSTRA_ARGS;
 

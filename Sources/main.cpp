@@ -29,6 +29,7 @@ static void compareMatrices(Grafy::DistanceMatrix& a, Grafy::DistanceMatrix& b)
     }
 }
 
+/// @brief generates test graphs and stores them in a file
 static void generateGraphs()
 {
     for (int verticesCount = 100; verticesCount <= 1000; verticesCount += 100)
@@ -46,6 +47,7 @@ static void generateGraphs()
     }
 }
 
+/// @brief test function that measures run times of the algorithms and saves results to a .csv file
 static void measure(bool pthread)
 {
     std::ofstream floyd;
@@ -139,6 +141,7 @@ static void measure(bool pthread)
     labelset.close();
 }
 
+/// @brief test function that measures run time of Open MPI algorithms and prints it in the console
 static void measure_MPI()
 {
     MPI_Init(nullptr, nullptr);
@@ -151,6 +154,8 @@ static void measure_MPI()
             char filename[200];
             sprintf(filename, "../Examples/%dV_%dH.hrn", verticesCount, edgesToAddCount);
 
+//            Grafy::Floyd_MPI().calculate(filename, false);
+//            Grafy::LabelCorrect_MPI().calculate(filename, false);
             Grafy::LabelSet_MPI().calculate(filename, false);
         }
     }
@@ -160,21 +165,31 @@ static void measure_MPI()
 
 int main()
 {
-//    std::cout << "Finished reading from file\n";
-//    // ----------------------------------------------------------------------
-//    auto start = std::chrono::high_resolution_clock::now();
-//    // ----------------------------------------------------------------------
+    // Example for running some algorithm: -------
+    int edgesCount, verticesCount;
+    Grafy::Parser::countEdgesAndVertices("../Examples/test.hrn", edgesCount,
+                                         verticesCount); // count edges and vertices in the file
+    Grafy::EdgesList list(edgesCount, verticesCount);
+    Grafy::Parser::parse("../Examples/test.hrn", list); // reading graph from file to EdgesList
+    Grafy::DistanceMatrix test(verticesCount); // this will be the result matrix
 
-//    measure(false);
-    measure_MPI();
+    Grafy::LabelSet().calculate(list, test); // create instance of LabelSet and call calculate
+    test.print(); // print out the result
+    // -------------------------------------------
 
-//    // ----------------------------------------------------------------------
-//    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
-//            std::chrono::high_resolution_clock::now() - start
-//    );
-//    std::cout << "Finished, " << duration.count() << " us elapsed\n";
-//    // ----------------------------------------------------------------------
+    // Floyd -------------------------------------
+    Grafy::DistanceMatrix test2(verticesCount);
+    Grafy::Parser::parse("../Examples/test.hrn", test2); // for Floyd we parse the file directly into matrix
+    Grafy::FloydPthread().calculate(test2);
+    test2.print();
+    // -------------------------------------------
 
+    // Running Open MPI implementation -----------
+    // Comment out all the code above first, then uncomment the MPI call !!!
+
+//    Grafy::LabelSet_MPI().calculate("../Examples/test.hrn", true/*true means that we want to do check afterwards and print out the matrix*/);
+
+    // -------------------------------------------
 
     return 0;
 }

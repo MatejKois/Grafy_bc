@@ -34,13 +34,13 @@ namespace Grafy
         {
             for (int x = 1; x <= verticesCount; ++x)
             {
-                //calculating array indexes, so the edges are sorted
+                // calculating array indexes, so the edges are sorted
                 int arrIndex1 = (x - 1) + (y - 1) * verticesCount;
-                int arrIndex2 = (y - 1) + (x - 1) * verticesCount; //for reverse edge
+                int arrIndex2 = (y - 1) + (x - 1) * verticesCount; // for reverse edge
                 array[arrIndex1][0] = y;
                 array[arrIndex1][1] = x;
 
-                int randWeight = randDist(mt); //random edge weight
+                int randWeight = randDist(mt); // random edge weight
                 if (y != x)
                 {
                     array[arrIndex1][2] = randWeight;
